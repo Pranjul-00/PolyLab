@@ -2,9 +2,11 @@
 
 .reactorPage {
     display: flex;
-    min-height: calc(100vh - 70px);
+    height: calc(100vh - 70px);
+    max-height: calc(100vh - 70px);
     background: var(--color-bg-primary);
     position: relative;
+    overflow: hidden;
 }
 
 /* ========================================
@@ -414,7 +416,9 @@
     flex: 1;
     position: relative;
     height: calc(100vh - 70px);
+    max-height: calc(100vh - 70px);
     width: 100%;
+    overflow: hidden;
 }
 
 .instructions {
