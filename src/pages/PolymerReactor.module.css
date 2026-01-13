@@ -450,6 +450,47 @@
     transform: scale(0.95);
 }
 
+/* Fullscreen Button */
+.fullscreenButton {
+    position: absolute;
+    top: var(--space-lg);
+    right: var(--space-lg);
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-md);
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--color-text-primary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-base);
+    z-index: 50;
+    pointer-events: all;
+}
+
+.fullscreenButton:hover {
+    background: rgba(0, 0, 0, 0.8);
+    border-color: var(--color-accent-cyan);
+    color: var(--color-accent-cyan);
+}
+
+.fullscreenButton:active {
+    transform: scale(0.95);
+}
+
+/* Fullscreen mode adjustments */
+.visualizationContainer:fullscreen {
+    background: #050505;
+}
+
+.visualizationContainer:fullscreen .fullscreenButton {
+    top: var(--space-xl);
+    right: var(--space-xl);
+}
+
 /* Instructions Panel */
 .instructions {
     position: absolute;

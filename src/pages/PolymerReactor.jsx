@@ -1,7 +1,7 @@
 // src/pages/PolymerReactor.jsx
 import React, { useState, useEffect, useRef } from "react";
 import ForceGraph3D from "react-force-graph-3d";
-import { Info, RotateCcw, ChevronDown, ChevronUp, Sliders, HelpCircle, X, Mouse } from 'lucide-react';
+import { Info, RotateCcw, ChevronDown, ChevronUp, Sliders, HelpCircle, X, Mouse, Maximize, Minimize } from 'lucide-react';
 import { generateLinear, generateBranched, generateCrossLinked, calculateGraphProperties } from "../PolymerLogic";
 import styles from "./PolymerReactor.module.css";
 
@@ -12,6 +12,7 @@ function PolymerReactor() {
     const [showControls, setShowControls] = useState(true);
     const [selectedNode, setSelectedNode] = useState(null);
     const [showInstructions, setShowInstructions] = useState(false);
+    const [isFullscreen, setIsFullscreen] = useState(false);
 
     // Interactive parameters
     const [monomerCount, setMonomerCount] = useState(50);
@@ -19,6 +20,7 @@ function PolymerReactor() {
     const [crosslinkDensity, setCrosslinkDensity] = useState(25);
 
     const graphRef = useRef();
+    const visualizationRef = useRef();
 
     // Polymer information database
     const polymerInfo = {
@@ -64,6 +66,16 @@ function PolymerReactor() {
         setSelectedNode(null);
     }, [polymerType, monomerCount, branchDensity, crosslinkDensity]);
 
+    // Listen for fullscreen changes
+    useEffect(() => {
+        const handleFullscreenChange = () => {
+            setIsFullscreen(!!document.fullscreenElement);
+        };
+
+        document.addEventListener('fullscreenchange', handleFullscreenChange);
+        return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
+    }, []);
+
     const currentInfo = polymerInfo[polymerType];
     const graphProps = calculateGraphProperties(graphData);
 
@@ -77,6 +89,19 @@ function PolymerReactor() {
         setSelectedNode(node);
     };
 
+    const toggleFullscreen = async () => {
+        if (!visualizationRef.current) return;
+
+        try {
+            if (!document.fullscreenElement) {
+                await visualizationRef.current.requestFullscreen();
+            } else {
+                await document.exitFullscreen();
+            }
+        } catch (err) {
+            console.error('Fullscreen error:', err);
+        }
+    };
     return (
         <div className={styles.reactorPage}>
             {/* Control Panel */}
@@ -271,7 +296,7 @@ function PolymerReactor() {
             </div>
 
             {/* 3D Visualization */}
-            <div className={styles.visualizationContainer}>
+            <div className={styles.visualizationContainer} ref={visualizationRef}>
                 <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1 }}>
                     <ForceGraph3D
                         ref={graphRef}
@@ -295,7 +320,14 @@ function PolymerReactor() {
                     />
                 </div>
 
-
+                {/* Fullscreen Button */}
+                <button
+                    className={styles.fullscreenButton}
+                    onClick={toggleFullscreen}
+                    aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
+                >
+                    {isFullscreen ? <Minimize size={20} /> : <Maximize size={20} />}
+                </button>
                 {/* Floating Help Button */}
                 <button
                     className={styles.helpButton}
