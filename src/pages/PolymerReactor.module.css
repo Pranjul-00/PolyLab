@@ -528,8 +528,8 @@
 
 .instructionItem strong {
     color: var(--color-accent-cyan);
-    min-width: 140px;
     font-weight: 600;
+    white-space: nowrap;
 }
 
 /* ========================================
