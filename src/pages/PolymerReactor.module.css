@@ -1,0 +1,304 @@
+/* PolymerReactor.module.css */
+
+.reactorPage {
+    display: flex;
+    min-height: calc(100vh - 70px);
+    background: var(--color-bg-primary);
+    position: relative;
+}
+
+/* ========================================
+   Control Panel
+   ======================================== */
+
+.controlPanel {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    border-top: 1px solid var(--glass-border);
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+    padding: var(--space-lg);
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.panelHeader {
+    margin-bottom: var(--space-lg);
+}
+
+.panelTitle {
+    font-size: var(--text-2xl);
+    margin-bottom: var(--space-xs);
+    background: linear-gradient(90deg, var(--color-accent-green), var(--color-accent-cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.panelSubtitle {
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    margin: 0;
+}
+
+/* Selector Section */
+.selectorSection {
+    margin-bottom: var(--space-lg);
+}
+
+.sectionLabel {
+    display: block;
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-tertiary);
+    margin-bottom: var(--space-sm);
+    font-weight: 600;
+}
+
+.buttonGrid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-sm);
+}
+
+.polymerButton {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: var(--space-md);
+    background: rgba(255, 255, 255, 0.03);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-lg);
+    color: var(--color-text-primary);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    font-family: var(--font-primary);
+    text-align: left;
+}
+
+.polymerButton:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+.polymerButton.active {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: var(--accent-color);
+    box-shadow: 0 0 20px rgba(var(--accent-color), 0.3);
+}
+
+.buttonTitle {
+    font-size: var(--text-base);
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.buttonSubtext {
+    font-size: var(--text-xs);
+    color: var(--color-text-tertiary);
+}
+
+/* Stats Section */
+.statsSection {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-sm);
+    margin-bottom: var(--space-lg);
+}
+
+.statCard {
+    background: rgba(0, 0, 0, 0.3);
+    padding: var(--space-md);
+    border-radius: var(--radius-md);
+    border-left: 3px solid var(--color-accent-cyan);
+    text-align: center;
+}
+
+.statLabel {
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-tertiary);
+    margin-bottom: 0.25rem;
+}
+
+.statValue {
+    font-size: var(--text-xl);
+    font-weight: 700;
+    color: var(--color-text-primary);
+    font-family: var(--font-display);
+}
+
+/* Info Section */
+.infoSection {
+    margin-bottom: var(--space-lg);
+}
+
+.infoToggle {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: var(--space-md);
+    background: rgba(74, 222, 128, 0.1);
+    border: 1px solid rgba(74, 222, 128, 0.3);
+    border-radius: var(--radius-md);
+    color: var(--color-accent-green);
+    font-weight: 600;
+    font-size: var(--text-sm);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    font-family: var(--font-primary);
+}
+
+.infoToggle:hover {
+    background: rgba(74, 222, 128, 0.15);
+}
+
+.infoToggle span:first-of-type {
+    flex: 1;
+    text-align: left;
+}
+
+.infoContent {
+    margin-top: var(--space-md);
+    padding: var(--space-md);
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: var(--radius-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+.infoRow {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.infoLabel {
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-tertiary);
+    font-weight: 600;
+}
+
+.infoValue {
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+}
+
+/* Controls Section */
+.controlsSection {
+    display: flex;
+    gap: var(--space-sm);
+}
+
+.controlButton {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: var(--space-md);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-md);
+    color: var(--color-text-primary);
+    font-weight: 500;
+    font-size: var(--text-sm);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    font-family: var(--font-primary);
+}
+
+.controlButton:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--color-border-medium);
+}
+
+/* ========================================
+   Visualization Container
+   ======================================== */
+
+.visualizationContainer {
+    flex: 1;
+    position: relative;
+    height: calc(100vh - 70px);
+    width: 100%;
+}
+
+.instructions {
+    position: absolute;
+    bottom: var(--space-lg);
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-sm) var(--space-md);
+    z-index: 10;
+    pointer-events: none;
+}
+
+.instructions p {
+    margin: 0;
+    font-size: var(--text-xs);
+    color: var(--color-text-secondary);
+}
+
+.instructions strong {
+    color: var(--color-accent-cyan);
+}
+
+/* ========================================
+   Responsive Design
+   ======================================== */
+
+/* Tablet and up */
+@media (min-width: 768px) {
+    .reactorPage {
+        flex-direction: row;
+    }
+
+    .controlPanel {
+        position: static;
+        width: 380px;
+        max-height: none;
+        border-top: none;
+        border-right: 1px solid var(--glass-border);
+        padding: var(--space-xl);
+    }
+
+    .buttonGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .visualizationContainer {
+        flex: 1;
+    }
+
+    .instructions {
+        bottom: var(--space-xl);
+    }
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+    .controlPanel {
+        width: 420px;
+        padding: var(--space-2xl);
+    }
+
+    .panelTitle {
+        font-size: var(--text-3xl);
+    }
+}
