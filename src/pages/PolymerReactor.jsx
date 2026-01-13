@@ -1,14 +1,23 @@
 // src/pages/PolymerReactor.jsx
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import ForceGraph3D from "react-force-graph-3d";
-import { Info, Download, RotateCcw, ChevronDown, ChevronUp } from 'lucide-react';
-import { generateLinear, generateBranched, generateCrossLinked } from "../PolymerLogic";
+import { Info, RotateCcw, ChevronDown, ChevronUp, Sliders } from 'lucide-react';
+import { generateLinear, generateBranched, generateCrossLinked, calculateGraphProperties } from "../PolymerLogic";
 import styles from "./PolymerReactor.module.css";
 
 function PolymerReactor() {
     const [polymerType, setPolymerType] = useState("linear");
     const [graphData, setGraphData] = useState({ nodes: [], links: [] });
     const [showInfo, setShowInfo] = useState(true);
+    const [showControls, setShowControls] = useState(true);
+    const [selectedNode, setSelectedNode] = useState(null);
+
+    // Interactive parameters
+    const [monomerCount, setMonomerCount] = useState(50);
+    const [branchDensity, setBranchDensity] = useState(20);
+    const [crosslinkDensity, setCrosslinkDensity] = useState(25);
+
+    const graphRef = useRef();
 
     // Polymer information database
     const polymerInfo = {
@@ -42,17 +51,29 @@ function PolymerReactor() {
     };
 
     useEffect(() => {
-        const numMonomers = 50;
-        if (polymerType === "linear") setGraphData(generateLinear(numMonomers));
-        else if (polymerType === "branched") setGraphData(generateBranched(numMonomers));
-        else if (polymerType === "crosslinked") setGraphData(generateCrossLinked(numMonomers));
-    }, [polymerType]);
+        let data;
+        if (polymerType === "linear") {
+            data = generateLinear(monomerCount);
+        } else if (polymerType === "branched") {
+            data = generateBranched(monomerCount, branchDensity);
+        } else if (polymerType === "crosslinked") {
+            data = generateCrossLinked(Math.floor(monomerCount / 2), crosslinkDensity);
+        }
+        setGraphData(data);
+        setSelectedNode(null);
+    }, [polymerType, monomerCount, branchDensity, crosslinkDensity]);
 
     const currentInfo = polymerInfo[polymerType];
+    const graphProps = calculateGraphProperties(graphData);
 
     const resetView = () => {
-        // Force re-render by changing state
-        setGraphData({ ...graphData });
+        if (graphRef.current) {
+            graphRef.current.zoomToFit(400);
+        }
+    };
+
+    const handleNodeClick = (node) => {
+        setSelectedNode(node);
     };
 
     return (
@@ -95,23 +116,116 @@ function PolymerReactor() {
                     </div>
                 </div>
 
+                {/* Interactive Controls */}
+                <div className={styles.controlsSection}>
+                    <button
+                        className={styles.sectionToggle}
+                        onClick={() => setShowControls(!showControls)}
+                    >
+                        <Sliders size={18} />
+                        <span>Simulation Controls</span>
+                        {showControls ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+                    </button>
+
+                    {showControls && (
+                        <div className={styles.sliderContainer}>
+                            {/* Monomer Count Slider */}
+                            <div className={styles.sliderGroup}>
+                                <label className={styles.sliderLabel}>
+                                    Monomer Count: <strong>{monomerCount}</strong>
+                                </label>
+                                <input
+                                    type="range"
+                                    min="10"
+                                    max="150"
+                                    value={monomerCount}
+                                    onChange={(e) => setMonomerCount(parseInt(e.target.value))}
+                                    className={styles.slider}
+                                />
+                                <div className={styles.sliderHint}>Adjust the number of monomers in the polymer chain</div>
+                            </div>
+
+                            {/* Branch Density Slider (only for branched) */}
+                            {polymerType === "branched" && (
+                                <div className={styles.sliderGroup}>
+                                    <label className={styles.sliderLabel}>
+                                        Branch Density: <strong>{branchDensity}%</strong>
+                                    </label>
+                                    <input
+                                        type="range"
+                                        min="5"
+                                        max="50"
+                                        value={branchDensity}
+                                        onChange={(e) => setBranchDensity(parseInt(e.target.value))}
+                                        className={styles.slider}
+                                    />
+                                    <div className={styles.sliderHint}>Control how many side chains branch off</div>
+                                </div>
+                            )}
+
+                            {/* Crosslink Density Slider (only for crosslinked) */}
+                            {polymerType === "crosslinked" && (
+                                <div className={styles.sliderGroup}>
+                                    <label className={styles.sliderLabel}>
+                                        Cross-link Density: <strong>{crosslinkDensity}%</strong>
+                                    </label>
+                                    <input
+                                        type="range"
+                                        min="10"
+                                        max="50"
+                                        value={crosslinkDensity}
+                                        onChange={(e) => setCrosslinkDensity(parseInt(e.target.value))}
+                                        className={styles.slider}
+                                    />
+                                    <div className={styles.sliderHint}>Control the mesh density between chains</div>
+                                </div>
+                            )}
+                        </div>
+                    )}
+                </div>
+
                 {/* Graph Statistics */}
                 <div className={styles.statsSection}>
                     <div className={styles.statCard}>
                         <div className={styles.statLabel}>Nodes</div>
-                        <div className={styles.statValue}>{graphData.nodes.length}</div>
+                        <div className={styles.statValue}>{graphProps.nodeCount}</div>
                     </div>
                     <div className={styles.statCard}>
                         <div className={styles.statLabel}>Edges</div>
-                        <div className={styles.statValue}>{graphData.links.length}</div>
+                        <div className={styles.statValue}>{graphProps.edgeCount}</div>
                     </div>
                     <div className={styles.statCard}>
-                        <div className={styles.statLabel}>Type</div>
+                        <div className={styles.statLabel}>Avg Degree</div>
                         <div className={styles.statValue} style={{ fontSize: '0.875rem' }}>
-                            {currentInfo.graphType}
+                            {graphProps.avgDegree}
                         </div>
                     </div>
                 </div>
+
+                {/* Selected Node Info */}
+                {selectedNode && (
+                    <div className={styles.selectedNodeInfo}>
+                        <div className={styles.selectedNodeHeader}>
+                            <span className={styles.selectedNodeTitle}>Selected Node</span>
+                            <button
+                                className={styles.closeButton}
+                                onClick={() => setSelectedNode(null)}
+                            >×</button>
+                        </div>
+                        <div className={styles.selectedNodeContent}>
+                            <div className={styles.nodeInfoRow}>
+                                <span className={styles.nodeInfoLabel}>ID:</span>
+                                <span className={styles.nodeInfoValue}>{selectedNode.name || selectedNode.id}</span>
+                            </div>
+                            <div className={styles.nodeInfoRow}>
+                                <span className={styles.nodeInfoLabel}>Type:</span>
+                                <span className={styles.nodeInfoValue}>
+                                    {selectedNode.type === 'branch' ? 'Branch Point' : 'Monomer'}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                )}
 
                 {/* Information Panel */}
                 <div className={styles.infoSection}>
@@ -146,8 +260,8 @@ function PolymerReactor() {
                     )}
                 </div>
 
-                {/* Controls */}
-                <div className={styles.controlsSection}>
+                {/* Action Buttons */}
+                <div className={styles.actionButtons}>
                     <button className={styles.controlButton} onClick={resetView}>
                         <RotateCcw size={18} />
                         <span>Reset View</span>
@@ -159,21 +273,27 @@ function PolymerReactor() {
             <div className={styles.visualizationContainer}>
                 <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1 }}>
                     <ForceGraph3D
+                        ref={graphRef}
                         graphData={graphData}
-                        nodeLabel="id"
-                        nodeColor={node => node.group === 2 ? "#ff4444" : currentInfo.color}
+                        nodeLabel={node => `${node.name || node.id} (${node.type})`}
+                        nodeColor={node => {
+                            if (selectedNode && node.id === selectedNode.id) return "#ffff00";
+                            return node.group === 2 ? "#ff4444" : currentInfo.color;
+                        }}
                         linkColor={() => "rgba(255,255,255,0.2)"}
                         nodeResolution={16}
                         backgroundColor="#050505"
                         showNavInfo={false}
                         nodeRelSize={6}
                         linkWidth={2}
+                        onNodeClick={handleNodeClick}
+                        nodeOpacity={0.9}
                     />
                 </div>
 
                 {/* Floating Instructions */}
                 <div className={styles.instructions}>
-                    <p>🖱️ <strong>Drag</strong> to rotate • <strong>Scroll</strong> to zoom • <strong>Right-click</strong> to pan</p>
+                    <p>🖱️ <strong>Drag</strong> to rotate • <strong>Scroll</strong> to zoom • <strong>Click nodes</strong> for info</p>
                 </div>
             </div>
         </div>
