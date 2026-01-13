@@ -280,12 +280,12 @@ function PolymerReactor() {
                             if (selectedNode && node.id === selectedNode.id) return "#ffff00";
                             return node.group === 2 ? "#ff4444" : currentInfo.color;
                         }}
-                        linkColor={() => "rgba(255,255,255,0.2)"}
+                        linkColor={() => "rgba(255,255,255,0.4)"}
                         nodeResolution={16}
                         backgroundColor="#050505"
                         showNavInfo={false}
                         nodeRelSize={6}
-                        linkWidth={2}
+                        linkWidth={3}
                         onNodeClick={handleNodeClick}
                         nodeOpacity={0.9}
                     />
