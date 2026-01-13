@@ -1,7 +1,7 @@
 // src/pages/PolymerReactor.jsx
 import React, { useState, useEffect, useRef } from "react";
 import ForceGraph3D from "react-force-graph-3d";
-import { Info, RotateCcw, ChevronDown, ChevronUp, Sliders, HelpCircle, X, Mouse, Maximize, Minimize } from 'lucide-react';
+import { Info, RotateCcw, ChevronDown, ChevronUp, Sliders, HelpCircle, X, Mouse, Maximize, Minimize, Play, Pause, Camera, RotateCw, Download } from 'lucide-react';
 import { generateLinear, generateBranched, generateCrossLinked, calculateGraphProperties } from "../PolymerLogic";
 import styles from "./PolymerReactor.module.css";
 
@@ -13,6 +13,8 @@ function PolymerReactor() {
     const [selectedNode, setSelectedNode] = useState(null);
     const [showInstructions, setShowInstructions] = useState(false);
     const [isFullscreen, setIsFullscreen] = useState(false);
+    const [isAutoRotate, setIsAutoRotate] = useState(false);
+    const [isPaused, setIsPaused] = useState(false);
 
     // Interactive parameters
     const [monomerCount, setMonomerCount] = useState(50);
@@ -21,6 +23,7 @@ function PolymerReactor() {
 
     const graphRef = useRef();
     const visualizationRef = useRef();
+    const rotationRef = useRef();
 
     // Polymer information database
     const polymerInfo = {
@@ -76,6 +79,31 @@ function PolymerReactor() {
         return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
     }, []);
 
+    // Auto-rotation effect
+    useEffect(() => {
+        if (!isAutoRotate || !graphRef.current) return;
+
+        const animate = () => {
+            if (graphRef.current && graphRef.current.camera()) {
+                const camera = graphRef.current.camera();
+                const angle = 0.002;
+                const x = camera.position.x;
+                const z = camera.position.z;
+                camera.position.x = x * Math.cos(angle) - z * Math.sin(angle);
+                camera.position.z = z * Math.cos(angle) + x * Math.sin(angle);
+                camera.lookAt(0, 0, 0);
+            }
+            rotationRef.current = requestAnimationFrame(animate);
+        };
+
+        rotationRef.current = requestAnimationFrame(animate);
+        return () => {
+            if (rotationRef.current) {
+                cancelAnimationFrame(rotationRef.current);
+            }
+        };
+    }, [isAutoRotate]);
+
     const currentInfo = polymerInfo[polymerType];
     const graphProps = calculateGraphProperties(graphData);
 
@@ -100,6 +128,37 @@ function PolymerReactor() {
             }
         } catch (err) {
             console.error('Fullscreen error:', err);
+        }
+    };
+
+    const toggleAutoRotate = () => {
+        setIsAutoRotate(!isAutoRotate);
+    };
+
+    const togglePause = () => {
+        setIsPaused(!isPaused);
+        if (graphRef.current) {
+            if (!isPaused) {
+                graphRef.current.pauseAnimation();
+            } else {
+                graphRef.current.resumeAnimation();
+            }
+        }
+    };
+
+    const takeScreenshot = () => {
+        if (graphRef.current) {
+            const canvas = graphRef.current.renderer().domElement;
+            const link = document.createElement('a');
+            link.download = `polymer-${polymerType}-${Date.now()}.png`;
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+    };
+
+    const centerView = () => {
+        if (graphRef.current) {
+            graphRef.current.zoomToFit(400);
         }
     };
     return (
@@ -328,6 +387,42 @@ function PolymerReactor() {
                 >
                     {isFullscreen ? <Minimize size={20} /> : <Maximize size={20} />}
                 </button>
+
+                {/* Simulation Controls Toolbar */}
+                <div className={styles.simControlsToolbar}>
+                    <button
+                        className={`${styles.simControl} ${isAutoRotate ? styles.active : ''}`}
+                        onClick={toggleAutoRotate}
+                        aria-label="Toggle auto-rotate"
+                        title="Auto-rotate"
+                    >
+                        <RotateCw size={18} />
+                    </button>
+                    <button
+                        className={`${styles.simControl} ${isPaused ? styles.active : ''}`}
+                        onClick={togglePause}
+                        aria-label={isPaused ? "Resume" : "Pause"}
+                        title={isPaused ? "Resume physics" : "Pause physics"}
+                    >
+                        {isPaused ? <Play size={18} /> : <Pause size={18} />}
+                    </button>
+                    <button
+                        className={styles.simControl}
+                        onClick={takeScreenshot}
+                        aria-label="Take screenshot"
+                        title="Save screenshot"
+                    >
+                        <Download size={18} />
+                    </button>
+                    <button
+                        className={styles.simControl}
+                        onClick={centerView}
+                        aria-label="Center view"
+                        title="Center view"
+                    >
+                        <Camera size={18} />
+                    </button>
+                </div>
                 {/* Floating Help Button */}
                 <button
                     className={styles.helpButton}
