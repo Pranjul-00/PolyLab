@@ -533,11 +533,6 @@
     border-color: var(--color-accent-cyan);
 }
 
-.simControl.active:hover {
-    background: var(--color-accent-green);
-    border-color: var(--color-accent-green);
-}
-
 .simControl:active {
     transform: scale(0.95);
 }
