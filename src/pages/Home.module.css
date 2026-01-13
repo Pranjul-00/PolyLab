@@ -359,6 +359,25 @@
     color: var(--color-text-tertiary);
     font-size: var(--text-sm);
     margin: 0;
+    margin-bottom: 0.5rem;
+}
+
+.footer p:last-child {
+    margin-bottom: 0;
+}
+
+.credit {
+    font-size: var(--text-xs);
+}
+
+.credit a {
+    color: var(--color-accent-cyan);
+    font-weight: 600;
+    transition: opacity var(--transition-fast);
+}
+
+.credit a:hover {
+    opacity: 0.8;
 }
 
 /* ========================================

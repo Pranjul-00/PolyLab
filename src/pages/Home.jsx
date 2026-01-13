@@ -44,10 +44,6 @@ const Home = () => {
             <section className={styles.hero}>
                 <div className={styles.heroContent}>
                     <div className={styles.heroText}>
-                        <div className={styles.badge}>
-                            <Sparkles size={14} />
-                            <span>Engineering Chemistry Suite</span>
-                        </div>
                         <h1 className={styles.heroTitle}>
                             Welcome to <span style={{ color: 'var(--color-accent-cyan)' }}>PolyLab</span>
                         </h1>
@@ -144,7 +140,13 @@ const Home = () => {
 
             {/* Footer */}
             <footer className={styles.footer}>
-                <p>Built with React, Three.js, and Graph Theory • Engineering Chemistry Educational Project</p>
+                <p>
+                    Built with React, Three.js, and Graph Theory • Engineering Chemistry Educational Project
+                </p>
+                <p className={styles.credit}>
+                    Made by <a href="https://github.com/Pranjul-00" target="_blank" rel="noopener noreferrer">Pranjul Gupta</a> •
+                    Cluster Innovation Centre, University of Delhi
+                </p>
             </footer>
         </div>
     );
