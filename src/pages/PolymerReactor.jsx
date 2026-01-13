@@ -1,7 +1,7 @@
 // src/pages/PolymerReactor.jsx
 import React, { useState, useEffect, useRef } from "react";
 import ForceGraph3D from "react-force-graph-3d";
-import { Info, RotateCcw, ChevronDown, ChevronUp, Sliders, HelpCircle, X, Mouse, Maximize, Minimize, Play, Pause, Camera, RotateCw, Download } from 'lucide-react';
+import { Info, RotateCcw, ChevronDown, ChevronUp, Sliders, HelpCircle, X, Mouse, Maximize, Minimize, RotateCw } from 'lucide-react';
 import { generateLinear, generateBranched, generateCrossLinked, calculateGraphProperties } from "../PolymerLogic";
 import styles from "./PolymerReactor.module.css";
 
@@ -367,30 +367,6 @@ function PolymerReactor() {
                         title="Auto-rotate"
                     >
                         <RotateCw size={18} />
-                    </button>
-                    <button
-                        className={`${styles.simControl} ${isPaused ? styles.active : ''}`}
-                        onClick={togglePause}
-                        aria-label={isPaused ? "Resume" : "Pause"}
-                        title={isPaused ? "Resume physics" : "Pause physics"}
-                    >
-                        {isPaused ? <Play size={18} /> : <Pause size={18} />}
-                    </button>
-                    <button
-                        className={styles.simControl}
-                        onClick={takeScreenshot}
-                        aria-label="Take screenshot"
-                        title="Save screenshot"
-                    >
-                        <Download size={18} />
-                    </button>
-                    <button
-                        className={styles.simControl}
-                        onClick={centerView}
-                        aria-label="Center view"
-                        title="Center view"
-                    >
-                        <Camera size={18} />
                     </button>
                 </div>
                 {/* Floating Help Button */}
