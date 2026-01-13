@@ -253,7 +253,8 @@
 
 .sliderLabel strong {
     color: var(--color-accent-cyan);
-    font-family: var(--font-display);
+    font-family: var(--font-primary);
+    font-weight: 700;
 }
 
 .slider {
