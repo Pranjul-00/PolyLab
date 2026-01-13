@@ -116,6 +116,24 @@ function PolymerReactor() {
         setSelectedNode(node);
     };
 
+    const toggleFullscreen = async () => {
+        if (!visualizationRef.current) return;
+
+        try {
+            if (!document.fullscreenElement) {
+                await visualizationRef.current.requestFullscreen();
+            } else {
+                await document.exitFullscreen();
+            }
+        } catch (err) {
+            console.error('Fullscreen error:', err);
+        }
+    };
+
+    const toggleAutoRotate = () => {
+        setIsAutoRotate(!isAutoRotate);
+    };
+
     const takeScreenshot = () => {
         if (graphRef.current) {
             const canvas = graphRef.current.renderer().domElement;
