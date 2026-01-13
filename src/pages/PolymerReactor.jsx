@@ -1,7 +1,7 @@
 // src/pages/PolymerReactor.jsx
 import React, { useState, useEffect, useRef } from "react";
 import ForceGraph3D from "react-force-graph-3d";
-import { Info, RotateCcw, ChevronDown, ChevronUp, Sliders, HelpCircle, X } from 'lucide-react';
+import { Info, RotateCcw, ChevronDown, ChevronUp, Sliders, HelpCircle, X, Mouse } from 'lucide-react';
 import { generateLinear, generateBranched, generateCrossLinked, calculateGraphProperties } from "../PolymerLogic";
 import styles from "./PolymerReactor.module.css";
 
@@ -309,7 +309,10 @@ function PolymerReactor() {
                 {showInstructions && (
                     <div className={styles.instructions}>
                         <div className={styles.instructionHeader}>
-                            <div className={styles.instructionTitle}>🎮 Controls</div>
+                            <div className={styles.instructionTitle}>
+                                <Mouse size={18} />
+                                <span>Controls</span>
+                            </div>
                             <button
                                 className={styles.instructionClose}
                                 onClick={() => setShowInstructions(false)}
@@ -318,18 +321,22 @@ function PolymerReactor() {
                                 <X size={18} />
                             </button>
                         </div>
-                        <div className={styles.instructionGrid}>
-                            <div className={styles.instructionItem}>
-                                <strong>Left Click + Drag:</strong> Rotate view
+                        <div className={styles.instructionList}>
+                            <div className={styles.instructionRow}>
+                                <span className={styles.controlKey}>Left Click + Drag</span>
+                                <span className={styles.controlAction}>Rotate view</span>
                             </div>
-                            <div className={styles.instructionItem}>
-                                <strong>Right Click + Drag:</strong> Pan (move camera)
+                            <div className={styles.instructionRow}>
+                                <span className={styles.controlKey}>Right Click + Drag</span>
+                                <span className={styles.controlAction}>Pan camera</span>
                             </div>
-                            <div className={styles.instructionItem}>
-                                <strong>Scroll Wheel:</strong> Zoom in/out
+                            <div className={styles.instructionRow}>
+                                <span className={styles.controlKey}>Scroll Wheel</span>
+                                <span className={styles.controlAction}>Zoom in/out</span>
                             </div>
-                            <div className={styles.instructionItem}>
-                                <strong>Click Node:</strong> Select and view info
+                            <div className={styles.instructionRow}>
+                                <span className={styles.controlKey}>Click Node</span>
+                                <span className={styles.controlAction}>Select & view info</span>
                             </div>
                         </div>
                     </div>
