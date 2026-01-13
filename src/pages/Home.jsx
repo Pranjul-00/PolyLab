@@ -66,9 +66,6 @@ const Home = () => {
                             </a>
                         </div>
                     </div>
-
-                    {/* Animated Background Gradient */}
-                    <div className={styles.heroGradient}></div>
                 </div>
             </section>
 

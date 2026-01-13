@@ -157,17 +157,19 @@ function PolymerReactor() {
 
             {/* 3D Visualization */}
             <div className={styles.visualizationContainer}>
-                <ForceGraph3D
-                    graphData={graphData}
-                    nodeLabel="id"
-                    nodeColor={node => node.group === 2 ? "#ff4444" : currentInfo.color}
-                    linkColor={() => "rgba(255,255,255,0.2)"}
-                    nodeResolution={16}
-                    backgroundColor="#050505"
-                    showNavInfo={false}
-                    nodeRelSize={6}
-                    linkWidth={2}
-                />
+                <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1 }}>
+                    <ForceGraph3D
+                        graphData={graphData}
+                        nodeLabel="id"
+                        nodeColor={node => node.group === 2 ? "#ff4444" : currentInfo.color}
+                        linkColor={() => "rgba(255,255,255,0.2)"}
+                        nodeResolution={16}
+                        backgroundColor="#050505"
+                        showNavInfo={false}
+                        nodeRelSize={6}
+                        linkWidth={2}
+                    />
+                </div>
 
                 {/* Floating Instructions */}
                 <div className={styles.instructions}>
