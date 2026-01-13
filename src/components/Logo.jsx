@@ -60,12 +60,12 @@ const Logo = ({ size = 'medium', showText = true }) => {
             {/* Logo Text */}
             {showText && (
                 <span
-                    className="gradient-text"
                     style={{
                         fontFamily: 'var(--font-display)',
                         fontSize: `var(--${textSize})`,
                         fontWeight: 700,
-                        letterSpacing: '0.05em'
+                        letterSpacing: '0.05em',
+                        color: 'var(--color-accent-cyan)'
                     }}
                 >
                     PolyLab

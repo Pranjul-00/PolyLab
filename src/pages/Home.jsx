@@ -49,7 +49,7 @@ const Home = () => {
                             <span>Engineering Chemistry Suite</span>
                         </div>
                         <h1 className={styles.heroTitle}>
-                            Welcome to <span className="gradient-text">PolyLab</span>
+                            Welcome to <span style={{ color: 'var(--color-accent-cyan)' }}>PolyLab</span>
                         </h1>
                         <p className={styles.heroSubtitle}>
                             An interactive educational platform combining <strong>Graph Theory</strong> and <strong>3D Visualization</strong> to teach polymer structures and water analysis for Engineering Chemistry.

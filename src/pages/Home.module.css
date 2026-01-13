@@ -80,7 +80,7 @@
     align-items: center;
     gap: 0.5rem;
     padding: 0.875rem 1.75rem;
-    background: linear-gradient(135deg, var(--color-accent-cyan), var(--color-accent-green));
+    background: var(--color-accent-cyan);
     color: #000;
     font-weight: 600;
     font-size: var(--text-base);
@@ -93,6 +93,7 @@
 .primaryButton:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 25px rgba(34, 211, 238, 0.4);
+    background: #1ac7e0;
 }
 
 .secondaryButton {
