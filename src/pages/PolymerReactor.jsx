@@ -288,12 +288,30 @@ function PolymerReactor() {
                         linkWidth={3}
                         onNodeClick={handleNodeClick}
                         nodeOpacity={0.9}
+                        controlType="orbit"
+                        enablePointerInteraction={true}
+                        d3VelocityDecay={0.3}
                     />
                 </div>
 
+
                 {/* Floating Instructions */}
                 <div className={styles.instructions}>
-                    <p>🖱️ <strong>Drag</strong> to rotate • <strong>Scroll</strong> to zoom • <strong>Click nodes</strong> for info</p>
+                    <div className={styles.instructionTitle}>🎮 Controls</div>
+                    <div className={styles.instructionGrid}>
+                        <div className={styles.instructionItem}>
+                            <strong>Left Click + Drag:</strong> Rotate view
+                        </div>
+                        <div className={styles.instructionItem}>
+                            <strong>Right Click + Drag:</strong> Pan (move camera)
+                        </div>
+                        <div className={styles.instructionItem}>
+                            <strong>Scroll Wheel:</strong> Zoom in/out
+                        </div>
+                        <div className={styles.instructionItem}>
+                            <strong>Click Node:</strong> Select and view info
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
