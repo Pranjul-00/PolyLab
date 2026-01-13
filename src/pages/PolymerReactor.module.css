@@ -491,6 +491,63 @@
     right: var(--space-xl);
 }
 
+/* Simulation Controls Toolbar */
+.simControlsToolbar {
+    position: absolute;
+    top: var(--space-lg);
+    left: var(--space-lg);
+    display: flex;
+    gap: 0.5rem;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: var(--radius-lg);
+    padding: 0.5rem;
+    z-index: 50;
+}
+
+.simControl {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-md);
+    background: transparent;
+    border: 1px solid transparent;
+    color: var(--color-text-primary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-fast);
+    position: relative;
+}
+
+.simControl:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--color-accent-cyan);
+    color: var(--color-accent-cyan);
+}
+
+.simControl.active {
+    background: var(--color-accent-cyan);
+    color: #000;
+    border-color: var(--color-accent-cyan);
+}
+
+.simControl.active:hover {
+    background: var(--color-accent-green);
+    border-color: var(--color-accent-green);
+}
+
+.simControl:active {
+    transform: scale(0.95);
+}
+
+/* Fullscreen adjustments for toolbar */
+.visualizationContainer:fullscreen .simControlsToolbar {
+    top: var(--space-xl);
+    left: var(--space-xl);
+}
+
 /* Instructions Panel */
 .instructions {
     position: absolute;
