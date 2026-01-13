@@ -16,7 +16,7 @@
     bottom: 0;
     left: 0;
     right: 0;
-    z-index: 100;
+    z-index: 1000;
     background: var(--glass-bg);
     backdrop-filter: blur(var(--glass-blur));
     border-top: 1px solid var(--glass-border);
@@ -33,10 +33,8 @@
 .panelTitle {
     font-size: var(--text-2xl);
     margin-bottom: var(--space-xs);
-    background: linear-gradient(90deg, var(--color-accent-green), var(--color-accent-cyan));
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: var(--color-accent-cyan);
+    font-weight: 700;
 }
 
 .panelSubtitle {

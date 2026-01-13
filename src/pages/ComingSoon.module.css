@@ -40,10 +40,8 @@
 .title {
     font-size: var(--text-4xl);
     margin-bottom: var(--space-md);
-    background: linear-gradient(90deg, var(--color-accent-cyan), var(--color-accent-green));
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: var(--color-accent-cyan);
+    font-weight: 700;
 }
 
 .description {
