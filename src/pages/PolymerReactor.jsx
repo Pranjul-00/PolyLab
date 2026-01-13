@@ -1,7 +1,7 @@
 // src/pages/PolymerReactor.jsx
 import React, { useState, useEffect, useRef } from "react";
 import ForceGraph3D from "react-force-graph-3d";
-import { Info, RotateCcw, ChevronDown, ChevronUp, Sliders } from 'lucide-react';
+import { Info, RotateCcw, ChevronDown, ChevronUp, Sliders, HelpCircle, X } from 'lucide-react';
 import { generateLinear, generateBranched, generateCrossLinked, calculateGraphProperties } from "../PolymerLogic";
 import styles from "./PolymerReactor.module.css";
 
@@ -11,6 +11,7 @@ function PolymerReactor() {
     const [showInfo, setShowInfo] = useState(true);
     const [showControls, setShowControls] = useState(true);
     const [selectedNode, setSelectedNode] = useState(null);
+    const [showInstructions, setShowInstructions] = useState(false);
 
     // Interactive parameters
     const [monomerCount, setMonomerCount] = useState(50);
@@ -90,7 +91,7 @@ function PolymerReactor() {
                     <label className={styles.sectionLabel}>Select Polymer Type</label>
                     <div className={styles.buttonGrid}>
                         <button
-                            className={`${styles.polymerButton} ${polymerType === "linear" ? styles.active : ""}`}
+                            className={`${styles.polymerButton} ${polymerType === "linear" ? styles.active : ""} `}
                             onClick={() => setPolymerType("linear")}
                             style={{ '--accent-color': polymerInfo.linear.color }}
                         >
@@ -98,7 +99,7 @@ function PolymerReactor() {
                             <span className={styles.buttonSubtext}>HDPE</span>
                         </button>
                         <button
-                            className={`${styles.polymerButton} ${polymerType === "branched" ? styles.active : ""}`}
+                            className={`${styles.polymerButton} ${polymerType === "branched" ? styles.active : ""} `}
                             onClick={() => setPolymerType("branched")}
                             style={{ '--accent-color': polymerInfo.branched.color }}
                         >
@@ -106,7 +107,7 @@ function PolymerReactor() {
                             <span className={styles.buttonSubtext}>LDPE</span>
                         </button>
                         <button
-                            className={`${styles.polymerButton} ${polymerType === "crosslinked" ? styles.active : ""}`}
+                            className={`${styles.polymerButton} ${polymerType === "crosslinked" ? styles.active : ""} `}
                             onClick={() => setPolymerType("crosslinked")}
                             style={{ '--accent-color': polymerInfo.crosslinked.color }}
                         >
@@ -295,24 +296,44 @@ function PolymerReactor() {
                 </div>
 
 
-                {/* Floating Instructions */}
-                <div className={styles.instructions}>
-                    <div className={styles.instructionTitle}>🎮 Controls</div>
-                    <div className={styles.instructionGrid}>
-                        <div className={styles.instructionItem}>
-                            <strong>Left Click + Drag:</strong> Rotate view
+                {/* Floating Help Button */}
+                <button
+                    className={styles.helpButton}
+                    onClick={() => setShowInstructions(!showInstructions)}
+                    aria-label="Show controls"
+                >
+                    <HelpCircle size={24} />
+                </button>
+
+                {/* Floating Instructions (Conditional) */}
+                {showInstructions && (
+                    <div className={styles.instructions}>
+                        <div className={styles.instructionHeader}>
+                            <div className={styles.instructionTitle}>🎮 Controls</div>
+                            <button
+                                className={styles.instructionClose}
+                                onClick={() => setShowInstructions(false)}
+                                aria-label="Close instructions"
+                            >
+                                <X size={18} />
+                            </button>
                         </div>
-                        <div className={styles.instructionItem}>
-                            <strong>Right Click + Drag:</strong> Pan (move camera)
-                        </div>
-                        <div className={styles.instructionItem}>
-                            <strong>Scroll Wheel:</strong> Zoom in/out
-                        </div>
-                        <div className={styles.instructionItem}>
-                            <strong>Click Node:</strong> Select and view info
+                        <div className={styles.instructionGrid}>
+                            <div className={styles.instructionItem}>
+                                <strong>Left Click + Drag:</strong> Rotate view
+                            </div>
+                            <div className={styles.instructionItem}>
+                                <strong>Right Click + Drag:</strong> Pan (move camera)
+                            </div>
+                            <div className={styles.instructionItem}>
+                                <strong>Scroll Wheel:</strong> Zoom in/out
+                            </div>
+                            <div className={styles.instructionItem}>
+                                <strong>Click Node:</strong> Select and view info
+                            </div>
                         </div>
                     </div>
-                </div>
+                )}
             </div>
         </div>
     );

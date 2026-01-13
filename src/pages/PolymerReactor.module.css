@@ -421,6 +421,38 @@
     overflow: hidden;
 }
 
+/* Floating Help Button */
+.helpButton {
+    position: absolute;
+    bottom: var(--space-xl);
+    right: var(--space-xl);
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--color-accent-cyan);
+    border: none;
+    color: #000;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(34, 211, 238, 0.4);
+    transition: all var(--transition-base);
+    z-index: 100;
+    pointer-events: all;
+}
+
+.helpButton:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(34, 211, 238, 0.6);
+    background: var(--color-accent-green);
+}
+
+.helpButton:active {
+    transform: scale(0.95);
+}
+
+/* Instructions Panel */
 .instructions {
     position: absolute;
     bottom: var(--space-lg);
@@ -429,21 +461,57 @@
     background: var(--glass-bg);
     backdrop-filter: blur(var(--glass-blur));
     border: 1px solid var(--glass-border);
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius-xl);
     padding: var(--space-md) var(--space-lg);
-    z-index: 10;
-    pointer-events: none;
+    z-index: 99;
+    pointer-events: all;
     min-width: 320px;
     max-width: 500px;
+    animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+.instructionHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-sm);
 }
 
 .instructionTitle {
     font-size: var(--text-sm);
     font-weight: 700;
     color: var(--color-accent-cyan);
-    margin-bottom: var(--space-sm);
-    text-align: center;
     letter-spacing: 0.05em;
+}
+
+.instructionClose {
+    background: none;
+    border: none;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    padding: 0.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-sm);
+    transition: all var(--transition-fast);
+}
+
+.instructionClose:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--color-text-primary);
 }
 
 .instructionGrid {
@@ -491,6 +559,11 @@
 
     .visualizationContainer {
         flex: 1;
+    }
+
+    .helpButton {
+        bottom: var(--space-2xl);
+        right: var(--space-2xl);
     }
 
     .instructions {
