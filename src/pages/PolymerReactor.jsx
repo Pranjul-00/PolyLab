@@ -14,7 +14,6 @@ function PolymerReactor() {
     const [showInstructions, setShowInstructions] = useState(false);
     const [isFullscreen, setIsFullscreen] = useState(false);
     const [isAutoRotate, setIsAutoRotate] = useState(false);
-    const [isPaused, setIsPaused] = useState(false);
 
     // Interactive parameters
     const [monomerCount, setMonomerCount] = useState(50);
@@ -115,35 +114,6 @@ function PolymerReactor() {
 
     const handleNodeClick = (node) => {
         setSelectedNode(node);
-    };
-
-    const toggleFullscreen = async () => {
-        if (!visualizationRef.current) return;
-
-        try {
-            if (!document.fullscreenElement) {
-                await visualizationRef.current.requestFullscreen();
-            } else {
-                await document.exitFullscreen();
-            }
-        } catch (err) {
-            console.error('Fullscreen error:', err);
-        }
-    };
-
-    const toggleAutoRotate = () => {
-        setIsAutoRotate(!isAutoRotate);
-    };
-
-    const togglePause = () => {
-        setIsPaused(!isPaused);
-        if (graphRef.current) {
-            if (!isPaused) {
-                graphRef.current.pauseAnimation();
-            } else {
-                graphRef.current.resumeAnimation();
-            }
-        }
     };
 
     const takeScreenshot = () => {
