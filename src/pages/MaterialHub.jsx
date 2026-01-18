@@ -1,5 +1,5 @@
 // src/pages/MaterialHub.jsx
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Atom, Beaker, FlaskConical, ChevronDown, ChevronUp, Maximize, Minimize } from 'lucide-react';
 import MoleculeViewer from '../components/MoleculeViewer';
 import { MOLECULE_LIBRARY } from '../MolecularStructures';
@@ -9,6 +9,7 @@ const MaterialHub = () => {
     const [selectedMolecule, setSelectedMolecule] = useState(MOLECULE_LIBRARY.ethylene);
     const [isSelectorOpen, setIsSelectorOpen] = useState(false);
     const [isFullscreen, setIsFullscreen] = useState(false);
+    const viewerPanelRef = useRef();
 
     const molecules = [
         { key: 'ethylene', data: MOLECULE_LIBRARY.ethylene, icon: Atom, color: '#22d3ee', category: 'Polyethylene' },
@@ -25,18 +26,16 @@ const MaterialHub = () => {
     };
 
     const toggleFullscreen = async () => {
-        const mainContentElement = document.querySelector(`.${styles.mainContent}`);
+        if (!viewerPanelRef.current) return;
 
-        if (!document.fullscreenElement) {
-            try {
-                await mainContentElement.requestFullscreen();
-                setIsFullscreen(true);
-            } catch (err) {
-                console.error('Error entering fullscreen:', err);
+        try {
+            if (!document.fullscreenElement) {
+                await viewerPanelRef.current.requestFullscreen();
+            } else {
+                await document.exitFullscreen();
             }
-        } else {
-            await document.exitFullscreen();
-            setIsFullscreen(false);
+        } catch (err) {
+            console.error('Fullscreen error:', err);
         }
     };
 
@@ -108,7 +107,7 @@ const MaterialHub = () => {
             {/* Main Content: Viewer and Info Side by Side */}
             <div className={styles.mainContent}>
                 {/* 3D Viewer */}
-                <div className={styles.viewerPanel}>
+                <div className={styles.viewerPanel} ref={viewerPanelRef}>
                     <button
                         className={styles.fullscreenButton}
                         onClick={toggleFullscreen}

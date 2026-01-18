@@ -196,30 +196,23 @@
 }
 
 /* Fullscreen mode */
-.mainContent:fullscreen {
+.viewerPanel:fullscreen {
     background: #000;
     padding: var(--space-lg);
-    gap: 0;
 }
 
-.mainContent:fullscreen .viewerPanel {
-    grid-column: 1 / -1;
-    border: none;
-    max-height: 100vh;
-}
-
-.mainContent:fullscreen .fullscreenButton {
+.viewerPanel:fullscreen .fullscreenButton {
     top: var(--space-md);
     right: var(--space-md);
 }
 
 /* Ensure viewer takes full height in fullscreen */
-.mainContent:fullscreen .viewerContainer {
+.viewerPanel:fullscreen .viewerContainer {
     height: calc(100vh - 2 * var(--space-lg));
     min-height: calc(100vh - 2 * var(--space-lg));
 }
 
-.mainContent:fullscreen .viewer {
+.viewerPanel:fullscreen .viewer {
     height: 100%;
     min-height: calc(100vh - 2 * var(--space-lg));
 }
