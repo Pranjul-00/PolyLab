@@ -181,56 +181,6 @@ function MoleculeViewer({ molecule }) {
     return (
         <div className={styles.viewerContainer}>
             <div ref={mountRef} className={styles.viewer} />
-            {molecule && (
-                <div className={styles.moleculeInfo}>
-                    <h3>{molecule.name}</h3>
-
-                    <div className={styles.infoSection}>
-                        <div>
-                            <p className={styles.label}>Formula</p>
-                            <p className={styles.formula}>{molecule.formula}</p>
-                        </div>
-                        {molecule.polymerType && (
-                            <div>
-                                <p className={styles.label}>Polymer</p>
-                                <p className={styles.value}>{molecule.polymerType}</p>
-                            </div>
-                        )}
-                    </div>
-
-                    <p className={styles.description}>{molecule.description}</p>
-
-                    {molecule.polymerizationType && (
-                        <div className={styles.polyType}>
-                            <strong>Polymerization:</strong> {molecule.polymerizationType}
-                        </div>
-                    )}
-
-                    {molecule.properties && (
-                        <div className={styles.properties}>
-                            <strong>Physical Properties:</strong>
-                            <ul>
-                                {Object.entries(molecule.properties).map(([key, value]) => (
-                                    <li key={key}>
-                                        <span className={styles.propKey}>{key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}:</span> {value}
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    )}
-
-                    {molecule.applications && (
-                        <div className={styles.applications}>
-                            <strong>Applications:</strong>
-                            <ul>
-                                {molecule.applications.map((app, idx) => (
-                                    <li key={idx}>{app}</li>
-                                ))}
-                            </ul>
-                        </div>
-                    )}
-                </div>
-            )}
         </div>
     );
 }
