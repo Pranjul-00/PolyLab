@@ -73,8 +73,16 @@ export const ETHYLENE = {
 export const STYRENE = {
     name: "Styrene",
     formula: "C₈H₈",
-    description: "Monomer for Polystyrene",
-    applications: ["Foam cups", "Packaging", "Insulation"],
+    description: "Aromatic monomer consisting of a vinyl group attached to a benzene ring. Polymerizes to form polystyrene, one of the most widely used plastics.",
+    polymerType: "Polystyrene (PS)",
+    polymerizationType: "Addition Polymerization (Free Radical)",
+    properties: {
+        meltingPoint: "-30°C",
+        boilingPoint: "145°C",
+        density: "0.909 g/cm³",
+        state: "Colorless to yellowish liquid"
+    },
+    applications: ["Expanded polystyrene (EPS) foam", "Disposable cups and containers", "Packaging materials", "Insulation boards", "CD/DVD cases"],
     atoms: [
         // Vinyl group (C=C)
         { id: 0, element: 'C', x: 0, y: 0, z: 0 },
@@ -124,8 +132,16 @@ export const STYRENE = {
 export const PHENOL = {
     name: "Phenol",
     formula: "C₆H₅OH",
-    description: "Monomer component for Bakelite (Phenol-formaldehyde resin)",
-    applications: ["Circuit boards", "Billiard balls", "Heat-resistant parts"],
+    description: "Aromatic alcohol with a hydroxyl group attached to benzene. Reacts with formaldehyde to form phenol-formaldehyde resin (Bakelite), the first synthetic plastic.",
+    polymerType: "Bakelite (Phenolic Resin)",
+    polymerizationType: "Condensation Polymerization",
+    properties: {
+        meltingPoint: "41°C",
+        boilingPoint: "182°C",
+        density: "1.07 g/cm³",
+        state: "White crystalline solid"
+    },
+    applications: ["Electrical insulators", "Billiard balls", "Circuit boards", "Heat-resistant handles", "Adhesives and coatings"],
     atoms: [
         // Benzene ring
         { id: 0, element: 'C', x: 0, y: 0, z: 0 },
@@ -170,8 +186,16 @@ export const PHENOL = {
 export const FORMALDEHYDE = {
     name: "Formaldehyde",
     formula: "CH₂O",
-    description: "Cross-linking agent for Bakelite",
-    applications: ["Resin production", "Adhesives"],
+    description: "Simplest aldehyde that acts as a cross-linking agent. Reacts with phenol to create three-dimensional network polymer (Bakelite).",
+    polymerType: "Bakelite (Cross-linking Agent)",
+    polymerizationType: "Condensation Polymerization",
+    properties: {
+        meltingPoint: "-92°C",
+        boilingPoint: "-19°C",
+        density: "0.815 g/cm³ (gas)",
+        state: "Colorless gas (37% aqueous solution: Formalin)"
+    },
+    applications: ["Phenolic resin production", "Adhesives (plywood, particleboard)", "Disinfectant (Formalin)", "Textile treatments"],
     atoms: [
         { id: 0, element: 'C', x: 0, y: 0, z: 0 },
         { id: 1, element: 'O', x: 1.2, y: 0, z: 0 },
@@ -191,8 +215,16 @@ export const FORMALDEHYDE = {
 export const ADIPIC_ACID = {
     name: "Adipic Acid",
     formula: "C₆H₁₀O₄",
-    description: "Dicarboxylic acid component for Nylon-6,6",
-    applications: ["Nylon production", "Plasticizers"],
+    description: "Dicarboxylic acid with six carbons. Reacts with hexamethylenediamine to form Nylon-6,6 through condensation polymerization.",
+    polymerType: "Nylon-6,6 (Polyamide)",
+    polymerizationType: "Condensation Polymerization",
+    properties: {
+        meltingPoint: "152°C",
+        boilingPoint: "337°C",
+        density: "1.36 g/cm³",
+        state: "White crystalline solid"
+    },
+    applications: ["Nylon-6,6 production", "Plasticizers", "Polyurethane foams", "Food acidulant"],
     atoms: [
         // First COOH group
         { id: 0, element: 'C', x: 0, y: 0, z: 0 },
@@ -252,8 +284,16 @@ export const ADIPIC_ACID = {
 export const HEXAMETHYLENEDIAMINE = {
     name: "Hexamethylenediamine",
     formula: "C₆H₁₆N₂",
-    description: "Diamine component for Nylon-6,6",
-    applications: ["Nylon production"],
+    description: "Diamine with six carbons. Reacts with adipic acid to form Nylon-6,6, a strong and versatile synthetic fiber used in textiles and engineering.",
+    polymerType: "Nylon-6,6 (Polyamide)",
+    polymerizationType: "Condensation Polymerization",
+    properties: {
+        meltingPoint: "42°C",
+        boilingPoint: "204°C",
+        density: "0.89 g/cm³",
+        state: "Colorless crystalline solid"
+    },
+    applications: ["Nylon-6,6 production", "Epoxy curing agent", "Polyurethane production", "Corrosion inhibitors"],
     atoms: [
         // First NH2 group
         { id: 0, element: 'N', x: 0, y: 0, z: 0 },
