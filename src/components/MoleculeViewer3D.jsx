@@ -1,6 +1,7 @@
 // src/components/MoleculeViewer3D.jsx
 // Enhanced molecular viewer using 3Dmol.js and PubChem API
 import React, { useRef, useEffect, useState } from 'react';
+import $3Dmol from '3dmol';
 import styles from './MoleculeViewer.module.css';
 
 function MoleculeViewer3D({ molecule }) {
@@ -10,7 +11,7 @@ function MoleculeViewer3D({ molecule }) {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        if (!molecule || !containerRef.current || !window.$3Dmol) return;
+        if (!molecule || !containerRef.current) return;
 
         setLoading(true);
         setError(null);
@@ -22,7 +23,7 @@ function MoleculeViewer3D({ molecule }) {
 
         // Create 3Dmol viewer
         const config = { backgroundColor: '#050505' };
-        const viewer = window.$3Dmol.createViewer(containerRef.current, config);
+        const viewer = $3Dmol.createViewer(containerRef.current, config);
         viewerRef.current = viewer;
 
         // PubChem CID mapping for our molecules

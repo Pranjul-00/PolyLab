@@ -1,7 +1,7 @@
 // src/pages/MaterialHub.jsx
 import React, { useState } from 'react';
 import { Atom, Beaker, FlaskConical } from 'lucide-react';
-import MoleculeViewer from '../components/MoleculeViewer';
+import MoleculeViewer3D from '../components/MoleculeViewer3D';
 import { MOLECULE_LIBRARY } from '../MolecularStructures';
 import styles from './MaterialHub.module.css';
 
@@ -99,7 +99,7 @@ function MaterialHub() {
 
                 {/* 3D Viewer */}
                 <main className={styles.viewerSection}>
-                    <MoleculeViewer molecule={selectedMolecule} />
+                    <MoleculeViewer3D molecule={selectedMolecule} />
                 </main>
             </div>
 

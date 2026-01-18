@@ -159,6 +159,67 @@
   color: var(--color-accent-cyan);
 }
 
+/* Loading and Error States */
+.loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: var(--color-text-secondary);
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  margin: 0 auto var(--space-md);
+  border: 3px solid rgba(34, 211, 238, 0.1);
+  border-top-color: var(--color-accent-cyan);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.error {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: #ff4444;
+  padding: var(--space-md);
+  background: rgba(255, 68, 68, 0.1);
+  border: 1px solid rgba(255, 68, 68, 0.3);
+  border-radius: var(--radius-md);
+}
+
+.dataSource {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding-top: var(--space-sm);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: var(--space-sm);
+}
+
+.dataSource small {
+  font-size: 0.7rem;
+  color: var(--color-text-tertiary);
+}
+
+.dataSource a {
+  color: var(--color-accent-cyan);
+  text-decoration: none;
+}
+
+.dataSource a:hover {
+  text-decoration: underline;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .moleculeInfo {
