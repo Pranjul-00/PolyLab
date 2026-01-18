@@ -43,7 +43,15 @@ const MaterialHub = () => {
     // Listen for fullscreen changes
     React.useEffect(() => {
         const handleFullscreenChange = () => {
-            setIsFullscreen(!!document.fullscreenElement);
+            const isNowFullscreen = !!document.fullscreenElement;
+            setIsFullscreen(isNowFullscreen);
+
+            // Force a small delay to ensure layout recalculates properly
+            if (!isNowFullscreen) {
+                setTimeout(() => {
+                    window.dispatchEvent(new Event('resize'));
+                }, 100);
+            }
         };
 
         document.addEventListener('fullscreenchange', handleFullscreenChange);
