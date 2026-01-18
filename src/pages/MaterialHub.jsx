@@ -1,142 +1,162 @@
 // src/pages/MaterialHub.jsx
 import React, { useState } from 'react';
-import { Atom, Beaker, FlaskConical } from 'lucide-react';
+import { Atom, Beaker, FlaskConical, ChevronDown, ChevronUp } from 'lucide-react';
 import MoleculeViewer from '../components/MoleculeViewer';
 import { MOLECULE_LIBRARY } from '../MolecularStructures';
 import styles from './MaterialHub.module.css';
 
-function MaterialHub() {
+const MaterialHub = () => {
     const [selectedMolecule, setSelectedMolecule] = useState(MOLECULE_LIBRARY.ethylene);
+    const [isSelectorOpen, setIsSelectorOpen] = useState(false);
 
-    const moleculeCards = [
-        {
-            id: 'ethylene',
-            name: 'Ethylene',
-            formula: 'C₂H₄',
-            category: 'Polyethylene',
-            icon: <Atom size={24} />,
-            color: '#22d3ee',
-        },
-        {
-            id: 'styrene',
-            name: 'Styrene',
-            formula: 'C₈H₈',
-            category: 'Polystyrene',
-            icon: <Beaker size={24} />,
-            color: '#a78bfa',
-        },
-        {
-            id: 'phenol',
-            name: 'Phenol',
-            formula: 'C₆H₅OH',
-            category: 'Bakelite',
-            icon: <FlaskConical size={24} />,
-            color: '#f59e0b',
-        },
-        {
-            id: 'formaldehyde',
-            name: 'Formaldehyde',
-            formula: 'CH₂O',
-            category: 'Bakelite',
-            icon: <FlaskConical size={24} />,
-            color: '#f59e0b',
-        },
-        {
-            id: 'adipicAcid',
-            name: 'Adipic Acid',
-            formula: 'C₆H₁₀O₄',
-            category: 'Nylon-6,6',
-            icon: <Beaker size={24} />,
-            color: '#ec4899',
-        },
-        {
-            id: 'hexamethylenediamine',
-            name: 'Hexamethylenediamine',
-            formula: 'C₆H₁₆N₂',
-            category: 'Nylon-6,6',
-            icon: <Beaker size={24} />,
-            color: '#ec4899',
-        },
+    const molecules = [
+        { key: 'ethylene', data: MOLECULE_LIBRARY.ethylene, icon: Atom, color: '#22d3ee', category: 'Polyethylene' },
+        { key: 'styrene', data: MOLECULE_LIBRARY.styrene, icon: Atom, color: '#a78bfa', category: 'Polystyrene' },
+        { key: 'phenol', data: MOLECULE_LIBRARY.phenol, icon: Beaker, color: '#f472b6', category: 'Bakelite' },
+        { key: 'formaldehyde', data: MOLECULE_LIBRARY.formaldehyde, icon: FlaskConical, color: '#fb923c', category: 'Bakelite' },
+        { key: 'adipicAcid', data: MOLECULE_LIBRARY.adipicAcid, icon: Beaker, color: '#4ade80', category: 'Nylon-6,6' },
+        { key: 'hexamethylenediamine', data: MOLECULE_LIBRARY.hexamethylenediamine, icon: FlaskConical, color: '#fbbf24', category: 'Nylon-6,6' },
     ];
+
+    const handleMoleculeSelect = (molecule) => {
+        setSelectedMolecule(molecule.data);
+        setIsSelectorOpen(false);
+    };
 
     return (
         <div className={styles.materialHub}>
             {/* Header */}
             <header className={styles.header}>
                 <h1 className={styles.title}>
-                    <Atom size={32} />
-                    <span>3D Material Hub</span>
+                    <Atom size={36} />
+                    3D Material Hub
                 </h1>
                 <p className={styles.subtitle}>
-                    Explore real molecular structures of polymer monomers and building blocks
+                    Explore polymer monomers and building blocks with interactive 3D visualization
                 </p>
             </header>
 
-            {/* Main Content */}
-            <div className={styles.content}>
-                {/* Molecule Library Sidebar */}
-                <aside className={styles.sidebar}>
-                    <h2 className={styles.sidebarTitle}>Molecule Library</h2>
-                    <div className={styles.moleculeGrid}>
-                        {moleculeCards.map((card) => (
+            {/* Molecule Selector Dropdown */}
+            <div className={styles.selectorContainer}>
+                <button
+                    className={styles.selectorButton}
+                    onClick={() => setIsSelectorOpen(!isSelectorOpen)}
+                >
+                    <div className={styles.selectorButtonContent}>
+                        <Atom size={20} />
+                        <span>Selected: {selectedMolecule.name}</span>
+                    </div>
+                    {isSelectorOpen ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                </button>
+
+                {isSelectorOpen && (
+                    <div className={styles.selectorDropdown}>
+                        {molecules.map((molecule) => (
                             <button
-                                key={card.id}
-                                className={`${styles.moleculeCard} ${selectedMolecule === MOLECULE_LIBRARY[card.id] ? styles.active : ''
-                                    }`}
-                                onClick={() => setSelectedMolecule(MOLECULE_LIBRARY[card.id])}
-                                style={{ '--card-color': card.color }}
+                                key={molecule.key}
+                                className={`${styles.moleculeOption} ${selectedMolecule.name === molecule.data.name ? styles.active : ''}`}
+                                onClick={() => handleMoleculeSelect(molecule)}
+                                style={{ '--card-color': molecule.color }}
                             >
-                                <div className={styles.cardIcon}>{card.icon}</div>
-                                <div className={styles.cardContent}>
-                                    <h3 className={styles.cardName}>{card.name}</h3>
-                                    <p className={styles.cardFormula}>{card.formula}</p>
-                                    <span className={styles.cardCategory}>{card.category}</span>
+                                <molecule.icon size={20} />
+                                <div className={styles.optionContent}>
+                                    <span className={styles.optionName}>{molecule.data.name}</span>
+                                    <span className={styles.optionFormula}>{molecule.data.formula}</span>
                                 </div>
+                                <span className={styles.optionCategory}>{molecule.category}</span>
                             </button>
                         ))}
                     </div>
-                </aside>
-
-                {/* 3D Viewer */}
-                <main className={styles.viewerSection}>
-                    <MoleculeViewer molecule={selectedMolecule} />
-                </main>
+                )}
             </div>
 
-            {/* Educational Info */}
-            <section className={styles.infoSection}>
-                <div className={styles.infoCard}>
-                    <h3>About This Module</h3>
-                    <p>
-                        The 3D Material Hub visualizes real molecular structures using atomic coordinates.
-                        Each atom is represented by a sphere (CPK coloring) and bonds are shown as cylinders.
-                        Rotate, zoom, and explore these molecules to understand their 3D geometry.
-                    </p>
+            {/* Main Content: Viewer and Info Side by Side */}
+            <div className={styles.mainContent}>
+                {/* 3D Viewer */}
+                <div className={styles.viewerPanel}>
+                    <MoleculeViewer molecule={selectedMolecule} />
                 </div>
-                <div className={styles.infoCard}>
-                    <h3>Color Legend</h3>
-                    <div className={styles.colorLegend}>
-                        <div className={styles.legendItem}>
-                            <span className={styles.atomDot} style={{ background: '#FFFFFF' }}></span>
-                            <span>Hydrogen (H)</span>
+
+                {/* Information Panel */}
+                <div className={styles.infoPanel}>
+                    <h2>{selectedMolecule.name}</h2>
+
+                    <div className={styles.infoGrid}>
+                        <div className={styles.infoItem}>
+                            <span className={styles.infoLabel}>Formula</span>
+                            <span className={styles.infoValue}>{selectedMolecule.formula}</span>
                         </div>
-                        <div className={styles.legendItem}>
-                            <span className={styles.atomDot} style={{ background: '#909090' }}></span>
-                            <span>Carbon (C)</span>
+                        {selectedMolecule.polymerType && (
+                            <div className={styles.infoItem}>
+                                <span className={styles.infoLabel}>Polymer</span>
+                                <span className={styles.infoValue}>{selectedMolecule.polymerType}</span>
+                            </div>
+                        )}
+                    </div>
+
+                    <div className={styles.description}>
+                        <p>{selectedMolecule.description}</p>
+                    </div>
+
+                    {selectedMolecule.polymerizationType && (
+                        <div className={styles.polyType}>
+                            <strong>Polymerization:</strong> {selectedMolecule.polymerizationType}
                         </div>
-                        <div className={styles.legendItem}>
-                            <span className={styles.atomDot} style={{ background: '#3050F8' }}></span>
-                            <span>Nitrogen (N)</span>
+                    )}
+
+                    {selectedMolecule.properties && (
+                        <div className={styles.section}>
+                            <h3>Physical Properties</h3>
+                            <div className={styles.propertiesGrid}>
+                                {Object.entries(selectedMolecule.properties).map(([key, value]) => (
+                                    <div key={key} className={styles.propertyItem}>
+                                        <span className={styles.propertyKey}>
+                                            {key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
+                                        </span>
+                                        <span className={styles.propertyValue}>{value}</span>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
-                        <div className={styles.legendItem}>
-                            <span className={styles.atomDot} style={{ background: '#FF0D0D' }}></span>
-                            <span>Oxygen (O)</span>
+                    )}
+
+                    {selectedMolecule.applications && (
+                        <div className={styles.section}>
+                            <h3>Applications</h3>
+                            <ul className={styles.applicationsList}>
+                                {selectedMolecule.applications.map((app, idx) => (
+                                    <li key={idx}>{app}</li>
+                                ))}
+                            </ul>
                         </div>
+                    )}
+                </div>
+            </div>
+
+            {/* Color Legend */}
+            <div className={styles.legend}>
+                <h3>CPK Color Scheme</h3>
+                <div className={styles.legendGrid}>
+                    <div className={styles.legendItem}>
+                        <span className={styles.atomDot} style={{ background: '#FFFFFF' }}></span>
+                        <span>Hydrogen (H)</span>
+                    </div>
+                    <div className={styles.legendItem}>
+                        <span className={styles.atomDot} style={{ background: '#909090' }}></span>
+                        <span>Carbon (C)</span>
+                    </div>
+                    <div className={styles.legendItem}>
+                        <span className={styles.atomDot} style={{ background: '#3050F8' }}></span>
+                        <span>Nitrogen (N)</span>
+                    </div>
+                    <div className={styles.legendItem}>
+                        <span className={styles.atomDot} style={{ background: '#FF0D0D' }}></span>
+                        <span>Oxygen (O)</span>
                     </div>
                 </div>
-            </section>
+            </div>
         </div>
     );
-}
+};
 
 export default MaterialHub;
