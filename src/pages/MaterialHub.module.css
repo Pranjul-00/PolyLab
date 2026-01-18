@@ -1,20 +1,15 @@
 /* MaterialHub.module.css */
 
 .materialHub {
-    min-height: calc(100vh - 70px);
-    height: calc(100vh - 70px);
+    min-height: 100vh;
     background: var(--color-bg-primary);
     padding: var(--space-xl);
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
 }
 
 /* Header */
 .header {
     text-align: center;
     margin-bottom: var(--space-xl);
-    flex-shrink: 0;
 }
 
 .title {
@@ -46,9 +41,8 @@
     display: grid;
     grid-template-columns: 280px 1fr;
     gap: var(--space-lg);
-    flex: 1;
-    min-height: 0;
-    margin-bottom: var(--space-lg);
+    margin-bottom: var(--space-xl);
+    align-items: start;
 }
 
 /* Sidebar */
@@ -170,6 +164,7 @@
     border: 1px solid var(--glass-border);
     border-radius: var(--radius-xl);
     padding: var(--space-lg);
+    min-height: 700px;
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -180,7 +175,6 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: var(--space-md);
-    flex-shrink: 0;
 }
 
 .infoCard {
