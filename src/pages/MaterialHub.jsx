@@ -120,59 +120,61 @@ const MaterialHub = () => {
                 </div>
 
                 {/* Information Panel */}
-                <div className={styles.infoPanel}>
-                    <h2>{selectedMolecule.name}</h2>
+                {!isFullscreen && (
+                    <div className={styles.infoPanel}>
+                        <h2>{selectedMolecule.name}</h2>
 
-                    <div className={styles.infoGrid}>
-                        <div className={styles.infoItem}>
-                            <span className={styles.infoLabel}>Formula</span>
-                            <span className={styles.infoValue}>{selectedMolecule.formula}</span>
-                        </div>
-                        {selectedMolecule.polymerType && (
+                        <div className={styles.infoGrid}>
                             <div className={styles.infoItem}>
-                                <span className={styles.infoLabel}>Polymer</span>
-                                <span className={styles.infoValue}>{selectedMolecule.polymerType}</span>
+                                <span className={styles.infoLabel}>Formula</span>
+                                <span className={styles.infoValue}>{selectedMolecule.formula}</span>
+                            </div>
+                            {selectedMolecule.polymerType && (
+                                <div className={styles.infoItem}>
+                                    <span className={styles.infoLabel}>Polymer</span>
+                                    <span className={styles.infoValue}>{selectedMolecule.polymerType}</span>
+                                </div>
+                            )}
+                        </div>
+
+                        <div className={styles.description}>
+                            <p>{selectedMolecule.description}</p>
+                        </div>
+
+                        {selectedMolecule.polymerizationType && (
+                            <div className={styles.polyType}>
+                                <strong>Polymerization:</strong> {selectedMolecule.polymerizationType}
+                            </div>
+                        )}
+
+                        {selectedMolecule.properties && (
+                            <div className={styles.section}>
+                                <h3>Physical Properties</h3>
+                                <div className={styles.propertiesGrid}>
+                                    {Object.entries(selectedMolecule.properties).map(([key, value]) => (
+                                        <div key={key} className={styles.propertyItem}>
+                                            <span className={styles.propertyKey}>
+                                                {key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
+                                            </span>
+                                            <span className={styles.propertyValue}>{value}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        {selectedMolecule.applications && (
+                            <div className={styles.section}>
+                                <h3>Applications</h3>
+                                <ul className={styles.applicationsList}>
+                                    {selectedMolecule.applications.map((app, idx) => (
+                                        <li key={idx}>{app}</li>
+                                    ))}
+                                </ul>
                             </div>
                         )}
                     </div>
-
-                    <div className={styles.description}>
-                        <p>{selectedMolecule.description}</p>
-                    </div>
-
-                    {selectedMolecule.polymerizationType && (
-                        <div className={styles.polyType}>
-                            <strong>Polymerization:</strong> {selectedMolecule.polymerizationType}
-                        </div>
-                    )}
-
-                    {selectedMolecule.properties && (
-                        <div className={styles.section}>
-                            <h3>Physical Properties</h3>
-                            <div className={styles.propertiesGrid}>
-                                {Object.entries(selectedMolecule.properties).map(([key, value]) => (
-                                    <div key={key} className={styles.propertyItem}>
-                                        <span className={styles.propertyKey}>
-                                            {key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
-                                        </span>
-                                        <span className={styles.propertyValue}>{value}</span>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    )}
-
-                    {selectedMolecule.applications && (
-                        <div className={styles.section}>
-                            <h3>Applications</h3>
-                            <ul className={styles.applicationsList}>
-                                {selectedMolecule.applications.map((app, idx) => (
-                                    <li key={idx}>{app}</li>
-                                ))}
-                            </ul>
-                        </div>
-                    )}
-                </div>
+                )}
             </div>
 
             {/* Color Legend */}

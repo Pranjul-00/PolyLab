@@ -208,10 +208,6 @@
     max-height: 100vh;
 }
 
-.mainContent:fullscreen .infoPanel {
-    display: none;
-}
-
 .mainContent:fullscreen .fullscreenButton {
     top: var(--space-md);
     right: var(--space-md);
