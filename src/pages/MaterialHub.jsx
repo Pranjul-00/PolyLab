@@ -43,19 +43,18 @@ const MaterialHub = () => {
     React.useEffect(() => {
         const handleFullscreenChange = () => {
             const isNowFullscreen = !!document.fullscreenElement;
-            setIsFullscreen(isNowFullscreen);
 
-            // Force a small delay to ensure layout recalculates properly
-            if (!isNowFullscreen) {
-                setTimeout(() => {
-                    window.dispatchEvent(new Event('resize'));
-                }, 100);
+            // Refresh page when exiting fullscreen to reset layout
+            if (!isNowFullscreen && isFullscreen) {
+                window.location.reload();
             }
+
+            setIsFullscreen(isNowFullscreen);
         };
 
         document.addEventListener('fullscreenchange', handleFullscreenChange);
         return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
-    }, []);
+    }, [isFullscreen]);
 
     return (
         <div className={styles.materialHub}>
