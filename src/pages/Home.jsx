@@ -22,7 +22,7 @@ const Home = () => {
             description: 'Visualize molecular structures like Nylon-6,6 and Bakelite monomers with atomic coordinates',
             icon: Atom,
             path: '/material-hub',
-            status: 'coming-soon',
+            status: 'active',
             color: 'green',
             features: ['Atomic Models', 'Molecular Viewer', 'Unit I Materials']
         },
