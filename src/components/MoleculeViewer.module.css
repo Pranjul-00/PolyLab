@@ -40,9 +40,17 @@
   font-size: var(--text-lg);
   font-weight: 700;
   color: var(--color-accent-cyan);
-  margin: 0 0 var(--space-xs) 0;
+  margin: 0 0 var(--space-md) 0;
   font-family: var(--font-display);
   grid-column: 1 / -1;
+}
+
+.label {
+  font-size: 0.65rem;
+  color: var(--color-text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0 0 0.125rem 0;
 }
 
 .formula {
@@ -53,11 +61,65 @@
   margin: 0;
 }
 
+.value {
+  font-size: var(--text-xs);
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
 .description {
   font-size: var(--text-xs);
   color: var(--color-text-secondary);
   line-height: 1.5;
   margin: 0;
+  grid-column: 1 / -1;
+}
+
+.polyType {
+  grid-column: 1 / -1;
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+  padding: var(--space-xs) var(--space-sm);
+  background: rgba(34, 211, 238, 0.1);
+  border-left: 2px solid var(--color-accent-cyan);
+  border-radius: var(--radius-sm);
+}
+
+.polyType strong {
+  color: var(--color-accent-cyan);
+}
+
+.properties {
+  grid-column: 1 / -1;
+}
+
+.properties strong {
+  color: var(--color-accent-cyan);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: block;
+  margin-bottom: var(--space-xs);
+}
+
+.properties ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.properties li {
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+  padding-left: 0;
+}
+
+.propKey {
+  color: var(--color-text-primary);
+  font-weight: 500;
 }
 
 .applications {
@@ -78,7 +140,7 @@
   padding: 0;
   list-style: none;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: var(--space-xs);
 }
 

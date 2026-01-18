@@ -14,6 +14,11 @@ function MoleculeViewer({ molecule }) {
     useEffect(() => {
         if (!molecule || !mountRef.current) return;
 
+        // Clear any existing canvas
+        while (mountRef.current.firstChild) {
+            mountRef.current.removeChild(mountRef.current.firstChild);
+        }
+
         // Scene setup
         const scene = new THREE.Scene();
         scene.background = new THREE.Color(0x050505);
@@ -131,8 +136,9 @@ function MoleculeViewer({ molecule }) {
         camera.position.z = maxDim * 2;
 
         // Animation loop
+        let animationId;
         const animate = () => {
-            requestAnimationFrame(animate);
+            animationId = requestAnimationFrame(animate);
             controls.update();
             renderer.render(scene, camera);
         };
@@ -150,7 +156,21 @@ function MoleculeViewer({ molecule }) {
         // Cleanup
         return () => {
             window.removeEventListener('resize', handleResize);
-            if (mountRef.current && renderer.domElement) {
+            cancelAnimationFrame(animationId);
+
+            // Dispose of geometries and materials
+            scene.traverse((object) => {
+                if (object.geometry) object.geometry.dispose();
+                if (object.material) {
+                    if (Array.isArray(object.material)) {
+                        object.material.forEach(material => material.dispose());
+                    } else {
+                        object.material.dispose();
+                    }
+                }
+            });
+
+            if (mountRef.current && renderer.domElement && mountRef.current.contains(renderer.domElement)) {
                 mountRef.current.removeChild(renderer.domElement);
             }
             renderer.dispose();
@@ -164,8 +184,41 @@ function MoleculeViewer({ molecule }) {
             {molecule && (
                 <div className={styles.moleculeInfo}>
                     <h3>{molecule.name}</h3>
-                    <p className={styles.formula}>{molecule.formula}</p>
+
+                    <div className={styles.infoSection}>
+                        <div>
+                            <p className={styles.label}>Formula</p>
+                            <p className={styles.formula}>{molecule.formula}</p>
+                        </div>
+                        {molecule.polymerType && (
+                            <div>
+                                <p className={styles.label}>Polymer</p>
+                                <p className={styles.value}>{molecule.polymerType}</p>
+                            </div>
+                        )}
+                    </div>
+
                     <p className={styles.description}>{molecule.description}</p>
+
+                    {molecule.polymerizationType && (
+                        <div className={styles.polyType}>
+                            <strong>Polymerization:</strong> {molecule.polymerizationType}
+                        </div>
+                    )}
+
+                    {molecule.properties && (
+                        <div className={styles.properties}>
+                            <strong>Physical Properties:</strong>
+                            <ul>
+                                {Object.entries(molecule.properties).map(([key, value]) => (
+                                    <li key={key}>
+                                        <span className={styles.propKey}>{key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}:</span> {value}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
+
                     {molecule.applications && (
                         <div className={styles.applications}>
                             <strong>Applications:</strong>
