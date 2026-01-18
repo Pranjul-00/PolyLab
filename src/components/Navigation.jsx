@@ -12,7 +12,7 @@ const Navigation = () => {
     const navLinks = [
         { path: '/', label: 'Home', icon: Atom },
         { path: '/polymer-reactor', label: 'Polymer Reactor', icon: Microscope },
-        { path: '/material-hub', label: '3D Material Hub', icon: Atom, comingSoon: true },
+        { path: '/material-hub', label: '3D Material Hub', icon: Atom },
         { path: '/water-dashboard', label: 'Water Dashboard', icon: Droplet, comingSoon: true },
     ];
 
