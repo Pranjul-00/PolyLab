@@ -5,11 +5,13 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { ATOM_COLORS, ATOM_RADII } from '../MolecularStructures';
 import styles from './MoleculeViewer.module.css';
 
-function MoleculeViewer({ molecule }) {
+function MoleculeViewer({ molecule, autoRotate = false }) {
     const mountRef = useRef(null);
     const sceneRef = useRef(null);
     const rendererRef = useRef(null);
     const controlsRef = useRef(null);
+    const cameraRef = useRef(null);
+    const rotationRef = useRef(null);
 
     useEffect(() => {
         if (!molecule || !mountRef.current) return;
@@ -32,6 +34,7 @@ function MoleculeViewer({ molecule }) {
             1000
         );
         camera.position.z = 10;
+        cameraRef.current = camera;
 
         // Renderer setup
         const renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -177,6 +180,31 @@ function MoleculeViewer({ molecule }) {
             controls.dispose();
         };
     }, [molecule]);
+
+    // Auto-rotation effect
+    useEffect(() => {
+        if (!autoRotate || !cameraRef.current) return;
+
+        const animate = () => {
+            if (cameraRef.current) {
+                const camera = cameraRef.current;
+                const angle = 0.005;
+                const x = camera.position.x;
+                const z = camera.position.z;
+                camera.position.x = x * Math.cos(angle) - z * Math.sin(angle);
+                camera.position.z = z * Math.cos(angle) + x * Math.sin(angle);
+                camera.lookAt(0, 0, 0);
+            }
+            rotationRef.current = requestAnimationFrame(animate);
+        };
+
+        rotationRef.current = requestAnimationFrame(animate);
+        return () => {
+            if (rotationRef.current) {
+                cancelAnimationFrame(rotationRef.current);
+            }
+        };
+    }, [autoRotate]);
 
     return (
         <div className={styles.viewerContainer}>

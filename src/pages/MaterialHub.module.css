@@ -195,6 +195,57 @@
     transform: scale(0.95);
 }
 
+/* Auto-Rotate Button */
+.autoRotateButton {
+    position: absolute;
+    top: var(--space-lg);
+    right: calc(var(--space-lg) + 50px);
+    z-index: 10;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-md);
+    color: var(--color-text-primary);
+    cursor: pointer;
+    transition: all var(--transition-base);
+}
+
+.autoRotateButton:hover {
+    background: rgba(34, 211, 238, 0.1);
+    border-color: var(--color-accent-cyan);
+    color: var(--color-accent-cyan);
+    box-shadow: 0 0 15px rgba(34, 211, 238, 0.3);
+}
+
+.autoRotateButton.active {
+    background: rgba(34, 211, 238, 0.2);
+    border-color: var(--color-accent-cyan);
+    color: var(--color-accent-cyan);
+}
+
+.autoRotateButton.active svg {
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.autoRotateButton:active {
+    transform: scale(0.95);
+}
+
 /* Fullscreen mode */
 .viewerPanel:fullscreen {
     background: #000;

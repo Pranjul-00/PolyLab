@@ -1,6 +1,6 @@
 // src/pages/MaterialHub.jsx
 import React, { useState, useRef } from 'react';
-import { Atom, Beaker, FlaskConical, ChevronDown, ChevronUp, Maximize, Minimize } from 'lucide-react';
+import { Atom, Beaker, FlaskConical, ChevronDown, ChevronUp, Maximize, Minimize, RotateCw } from 'lucide-react';
 import MoleculeViewer from '../components/MoleculeViewer';
 import { MOLECULE_LIBRARY } from '../MolecularStructures';
 import styles from './MaterialHub.module.css';
@@ -9,6 +9,7 @@ const MaterialHub = () => {
     const [selectedMolecule, setSelectedMolecule] = useState(MOLECULE_LIBRARY.ethylene);
     const [isSelectorOpen, setIsSelectorOpen] = useState(false);
     const [isFullscreen, setIsFullscreen] = useState(false);
+    const [isAutoRotate, setIsAutoRotate] = useState(false);
     const viewerPanelRef = useRef();
 
     const molecules = [
@@ -114,7 +115,14 @@ const MaterialHub = () => {
                     >
                         {isFullscreen ? <Minimize size={20} /> : <Maximize size={20} />}
                     </button>
-                    <MoleculeViewer molecule={selectedMolecule} />
+                    <button
+                        className={`${styles.autoRotateButton} ${isAutoRotate ? styles.active : ''}`}
+                        onClick={() => setIsAutoRotate(!isAutoRotate)}
+                        title={isAutoRotate ? "Stop Auto-Rotate" : "Start Auto-Rotate"}
+                    >
+                        <RotateCw size={20} />
+                    </button>
+                    <MoleculeViewer molecule={selectedMolecule} autoRotate={isAutoRotate} />
                 </div>
 
                 {/* Information Panel */}
