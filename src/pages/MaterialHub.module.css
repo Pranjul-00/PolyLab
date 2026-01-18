@@ -196,26 +196,36 @@
 }
 
 /* Fullscreen mode */
-.viewerPanel:fullscreen {
-    padding: var(--space-lg);
+.mainContent:fullscreen {
     background: #000;
-    border: none;
+    padding: var(--space-lg);
+    gap: 0;
 }
 
-.viewerPanel:fullscreen .fullscreenButton {
+.mainContent:fullscreen .viewerPanel {
+    grid-column: 1 / -1;
+    border: none;
+    max-height: 100vh;
+}
+
+.mainContent:fullscreen .infoPanel {
+    display: none;
+}
+
+.mainContent:fullscreen .fullscreenButton {
     top: var(--space-md);
     right: var(--space-md);
 }
 
 /* Ensure viewer takes full height in fullscreen */
-.viewerPanel:fullscreen .viewerContainer {
-    height: 100vh;
-    min-height: 100vh;
+.mainContent:fullscreen .viewerContainer {
+    height: calc(100vh - 2 * var(--space-lg));
+    min-height: calc(100vh - 2 * var(--space-lg));
 }
 
-.viewerPanel:fullscreen .viewer {
+.mainContent:fullscreen .viewer {
     height: 100%;
-    min-height: 100vh;
+    min-height: calc(100vh - 2 * var(--space-lg));
 }
 
 /* Info Panel */

@@ -25,11 +25,11 @@ const MaterialHub = () => {
     };
 
     const toggleFullscreen = async () => {
-        const viewerElement = document.querySelector(`.${styles.viewerPanel}`);
+        const mainContentElement = document.querySelector(`.${styles.mainContent}`);
 
         if (!document.fullscreenElement) {
             try {
-                await viewerElement.requestFullscreen();
+                await mainContentElement.requestFullscreen();
                 setIsFullscreen(true);
             } catch (err) {
                 console.error('Error entering fullscreen:', err);
