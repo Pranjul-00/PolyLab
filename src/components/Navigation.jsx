@@ -13,7 +13,7 @@ const Navigation = () => {
         { path: '/', label: 'Home', icon: Atom },
         { path: '/polymer-reactor', label: 'Polymer Reactor', icon: Microscope },
         { path: '/material-hub', label: '3D Material Hub', icon: Atom },
-        { path: '/water-dashboard', label: 'Water Dashboard', icon: Droplet, comingSoon: true },
+        { path: '/water-dashboard', label: 'Water Analysis', icon: Droplet },
     ];
 
     const isActive = (path) => location.pathname === path;

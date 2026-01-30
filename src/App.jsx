@@ -6,6 +6,7 @@ import Navigation from './components/Navigation';
 import Home from './pages/Home';
 import PolymerReactor from './pages/PolymerReactor';
 import MaterialHub from './pages/MaterialHub';
+import WaterAnalysis from './pages/WaterAnalysis/WaterAnalysis';
 import ComingSoon from './pages/ComingSoon';
 import './App.css';
 
@@ -18,16 +19,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/polymer-reactor" element={<PolymerReactor />} />
           <Route path="/material-hub" element={<MaterialHub />} />
-          <Route
-            path="/water-dashboard"
-            element={
-              <ComingSoon
-                title="Water Dashboard"
-                description="Analyze water quality data with interactive charts for hardness, alkalinity, and treatment efficiency. Coming soon to PolyLab!"
-                icon={Droplet}
-              />
-            }
-          />
+          <Route path="/water-dashboard" element={<WaterAnalysis />} />
         </Routes>
       </main>
     </div>

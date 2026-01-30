@@ -1,0 +1,214 @@
+/* src/pages/WaterAnalysis/WaterAnalysis.module.css */
+
+.waterAnalysisPage {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    height: calc(100vh - 80px);
+    /* Adjust based on navbar height */
+    padding: var(--space-lg);
+    gap: var(--space-lg);
+    background-color: var(--color-bg-primary);
+    overflow: hidden;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin: 0;
+}
+
+.subtitle {
+    color: var(--color-text-secondary);
+    font-size: 1rem;
+    margin: 0;
+}
+
+/* Dashboard Grid Layout */
+.dashboardGrid {
+    display: grid;
+    grid-template-columns: 300px 1fr 300px;
+    /* Controls | Simulation | Data */
+    gap: var(--space-lg);
+    height: 100%;
+    overflow: hidden;
+}
+
+/* Glassmorphism Panels */
+.panel {
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-md);
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    transition: all var(--transition-base);
+}
+
+.panel:hover {
+    border-color: rgba(34, 211, 238, 0.3);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Control Panel specific */
+.controlsPanel {
+    gap: var(--space-md);
+}
+
+.controlGroup {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+.label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+}
+
+.value {
+    color: var(--color-accent-cyan);
+    font-family: monospace;
+}
+
+/* Sliders */
+.slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    outline: none;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--color-accent-cyan);
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 0 10px rgba(34, 211, 238, 0.5);
+}
+
+.slider::-webkit-slider-thumb:hover {
+    transform: scale(1.1);
+}
+
+/* Run Button */
+.runButton {
+    margin-top: auto;
+    background: linear-gradient(135deg, var(--color-accent-cyan), var(--color-accent-blue));
+    color: #000;
+    font-weight: 600;
+    border: none;
+    padding: var(--space-md);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: all 0.2s;
+}
+
+.runButton:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(34, 211, 238, 0.3);
+}
+
+.runButton:active {
+    transform: translateY(0);
+}
+
+.runButton.active {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: white;
+}
+
+/* Simulation Canvas */
+.simulationContainer {
+    position: relative;
+    background: radial-gradient(circle at center, #1a1a2e 0%, #000 100%);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    grid-column: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* Data Panel */
+.statsGrid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
+}
+
+.statCard {
+    background: rgba(255, 255, 255, 0.05);
+    padding: var(--space-md);
+    border-radius: var(--radius-md);
+    border: 1px solid transparent;
+    transition: all 0.2s;
+}
+
+.statCard:hover {
+    border-color: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.statLabel {
+    font-size: 0.75rem;
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.25rem;
+}
+
+.statValue {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    font-family: monospace;
+}
+
+.statUnit {
+    font-size: 0.875rem;
+    color: var(--color-text-tertiary);
+    margin-left: 0.25rem;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .dashboardGrid {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 400px auto;
+        overflow-y: auto;
+    }
+
+    .simulationContainer {
+        grid-column: 1;
+    }
+}
