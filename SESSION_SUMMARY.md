@@ -198,3 +198,5 @@ The Material Hub now provides:
 **Developer:** Pranjul Gupta
 **Institution:** Cluster Innovation Centre, University of Delhi
 **Project:** PolyLab - Interactive Chemistry Education Platform
+
+11FEB: need to implement lammps in the project.
