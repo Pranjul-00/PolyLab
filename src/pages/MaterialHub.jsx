@@ -4,7 +4,6 @@ import { Atom, Beaker, FlaskConical, ChevronDown, ChevronUp, Maximize, Minimize,
 import MoleculeViewer from '../components/MoleculeViewer';
 import { MOLECULE_LIBRARY, ATOM_COLORS } from '../MolecularStructures';
 import styles from './MaterialHub.module.css';
-import ethyleneSimulation from '../data/ethylene_simulation.json';
 
 const MaterialHub = () => {
     const [selectedMoleculeKey, setSelectedMoleculeKey] = useState('ethylene');
@@ -14,18 +13,6 @@ const MaterialHub = () => {
     const viewerPanelRef = useRef();
 
     const selectedMolecule = MOLECULE_LIBRARY[selectedMoleculeKey];
-
-    // Check if we have simulation data for this molecule
-    const simulationData = selectedMoleculeKey === 'ethylene' ? ethyleneSimulation : null;
-
-    useEffect(() => {
-        // Disable auto-rotate if simulation is present
-        if (simulationData) {
-            setIsAutoRotate(false);
-        } else {
-            setIsAutoRotate(true);
-        }
-    }, [selectedMoleculeKey, simulationData]);
 
     const molecules = [
         { key: 'ethylene', data: MOLECULE_LIBRARY.ethylene, icon: Atom, color: '#22d3ee', category: 'Polyethylene' },
@@ -127,19 +114,16 @@ const MaterialHub = () => {
                     >
                         {isFullscreen ? <Minimize size={20} /> : <Maximize size={20} />}
                     </button>
-                    {!simulationData && (
-                        <button
-                            className={`${styles.autoRotateButton} ${isAutoRotate ? styles.active : ''}`}
-                            onClick={() => setIsAutoRotate(!isAutoRotate)}
-                            title={isAutoRotate ? "Stop Auto-Rotate" : "Start Auto-Rotate"}
-                        >
-                            <RotateCw size={20} />
-                        </button>
-                    )}
+                    <button
+                        className={`${styles.autoRotateButton} ${isAutoRotate ? styles.active : ''}`}
+                        onClick={() => setIsAutoRotate(!isAutoRotate)}
+                        title={isAutoRotate ? "Stop Auto-Rotate" : "Start Auto-Rotate"}
+                    >
+                        <RotateCw size={20} />
+                    </button>
 
                     <MoleculeViewer
                         molecule={selectedMolecule}
-                        simulationData={simulationData}
                         autoRotate={isAutoRotate}
                     />
                 </div>
@@ -148,20 +132,6 @@ const MaterialHub = () => {
                 {!isFullscreen && (
                     <div className={styles.infoPanel}>
                         <h2>{selectedMolecule.name}</h2>
-
-                        {simulationData && (
-                            <div style={{
-                                background: 'rgba(34, 197, 94, 0.1)',
-                                border: '1px solid #22c55e',
-                                color: '#22c55e',
-                                padding: '10px',
-                                borderRadius: '8px',
-                                marginBottom: '15px',
-                                fontSize: '0.9rem'
-                            }}>
-                                <strong>⚡ Simulation Active:</strong> Displaying {simulationData.length} frames of energy minimization.
-                            </div>
-                        )}
 
                         <div className={styles.infoGrid}>
                             <div className={styles.infoItem}>
