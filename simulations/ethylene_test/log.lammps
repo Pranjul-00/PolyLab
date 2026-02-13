@@ -1,0 +1,138 @@
+LAMMPS (7 Feb 2024 - Update 1)
+OMP_NUM_THREADS environment is not set. Defaulting to 1 thread. (src/comm.cpp:98)
+  using 1 OpenMP thread(s) per MPI task
+# LAMMPS input script for Ethylene
+
+# 1. Initialization
+units           real
+atom_style      full
+boundary        p p p
+
+# 2. Data Reading
+read_data       data.ethylene
+Reading data file ...
+  orthogonal box = (-10 -10 -10) to (10 10 10)
+  1 by 1 by 1 MPI processor grid
+WARNING: Atom style in data file id molecule type charge x y z differs from currently defined atom style full (src/read_data.cpp:621)
+  reading atoms ...
+  6 atoms
+  scanning bonds ...
+  3 = max bonds/atom
+  scanning angles ...
+  3 = max angles/atom
+  reading bonds ...
+  5 bonds
+  reading angles ...
+  6 angles
+Finding 1-2 1-3 1-4 neighbors ...
+  special bond factors lj:    0        0        0       
+  special bond factors coul:  0        0        0       
+     3 = max # of 1-2 neighbors
+     2 = max # of 1-3 neighbors
+     4 = max # of 1-4 neighbors
+     5 = max # of special neighbors
+  special bonds CPU = 0.000 seconds
+  read_data CPU = 0.019 seconds
+
+# 3. Force Field Settings (Simplified for demonstration)
+# Bond styles: 1=Single, 2=Double
+bond_style      harmonic
+angle_style     harmonic
+dihedral_style  none
+improper_style  none
+pair_style      lj/cut 10.0
+
+# Coefficients
+# pair_coeff    type1 type2 eps sigma
+pair_coeff      * * 0.1 3.0  # Generic LJ for everything
+
+# Bond Coeffs: type K r0
+# User Params: C-C/Single=100, C=C=147.
+# Targets: C-H=1.087 A, C=C=1.339 A
+bond_coeff      1 100.0 1.087  # Type 1: Single Bond (C-H)
+bond_coeff      2 147.0 1.339  # Type 2: Double Bond (C=C)
+bond_coeff      3 800.0 1.20   # Type 3: Triple (unused)
+
+# Angle Coeffs: type K theta0
+# User Params: Angle Strength = 60.
+# Targets: H-C-H = 117.5, H-C=C = 121.3
+# Since we only defined ONE angle type in the converter, we have to pick one equilibrium angle.
+# This is a limitation of our simple converter.
+# We will use an average or the H-C=C value (121.3) as it is more common (4 vs 2).
+angle_coeff     1 60.0 120.0   # Generic angle ~120 degrees
+
+# Note: This is an approximation. In a real simulation, we'd distinguish C-H from C-C single bonds.
+# But for "Hello World" to show it runs, this is sufficient.
+
+# 4. Settings
+neighbor        2.0 bin
+neigh_modify    delay 0 every 1 check yes
+
+# 5. Minimization
+thermo          10
+thermo_style    custom step temp pe ke etotal press vol
+dump            1 all atom 10 dump.ethylene
+
+minimize        1.0e-4 1.0e-6 100 1000
+Generated 0 of 15 mixed pair_coeff terms from geometric mixing rule
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 12
+  ghost atom cutoff = 12
+  binsize = 6, bins = 4 4 4
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair lj/cut, perpetual
+      attributes: half, newton on
+      pair build: half/bin/newton
+      stencil: half/bin/3d
+      bin: standard
+Per MPI rank memory allocation (min/avg/max) = 8.502 | 8.502 | 8.502 Mbytes
+   Step          Temp          PotEng         KinEng         TotEng         Press          Volume    
+         0   0              2.9979845      0              2.9979845      12.063061      8000         
+        10   0              0.00060212944  0              0.00060212944  3.4718201      8000         
+        20   0              2.5641175e-07  0              2.5641175e-07  0.06503552     8000         
+        29   0              6.9043868e-12  0              6.9043868e-12 -1.2079541e-05  8000         
+Loop time of 0.000559302 on 1 procs for 29 steps with 6 atoms
+
+22.7% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+Minimization stats:
+  Stopping criterion = linesearch alpha is zero
+  Energy initial, next-to-last, final = 
+      2.99798445620815 6.90438675228361e-12 6.90438675228361e-12
+  Force two-norm initial, final = 64.657404 8.1607585e-05
+  Force max component initial, final = 34.192167 3.6526419e-05
+  Final line search alpha, max atom move = 0.5 1.826321e-05
+  Iterations, force evaluations = 29 104
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 1.7894e-05 | 1.7894e-05 | 1.7894e-05 |   0.0 |  3.20
+Bond    | 8.6711e-05 | 8.6711e-05 | 8.6711e-05 |   0.0 | 15.50
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 9.7252e-05 | 9.7252e-05 | 9.7252e-05 |   0.0 | 17.39
+Output  | 0.00021178 | 0.00021178 | 0.00021178 |   0.0 | 37.87
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 0.0001457  |            |       | 26.04
+
+Nlocal:              6 ave           6 max           6 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:            156 ave         156 max         156 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 0
+Ave neighs/atom = 0
+Ave special neighs/atom = 5
+Neighbor list builds = 0
+Dangerous builds = 0
+
+# 6. Dynamics (Optional - just to see it wiggle)
+# reset_timestep 0
+# velocity all create 300.0 12345
+# fix 1 all nve
+# run 100
+Total wall time: 0:00:00
