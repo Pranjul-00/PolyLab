@@ -1,16 +1,31 @@
 // src/pages/MaterialHub.jsx
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Atom, Beaker, FlaskConical, ChevronDown, ChevronUp, Maximize, Minimize, RotateCw } from 'lucide-react';
 import MoleculeViewer from '../components/MoleculeViewer';
-import { MOLECULE_LIBRARY } from '../MolecularStructures';
+import { MOLECULE_LIBRARY, ATOM_COLORS } from '../MolecularStructures';
 import styles from './MaterialHub.module.css';
+import ethyleneSimulation from '../data/ethylene_simulation.json';
 
 const MaterialHub = () => {
-    const [selectedMolecule, setSelectedMolecule] = useState(MOLECULE_LIBRARY.ethylene);
+    const [selectedMoleculeKey, setSelectedMoleculeKey] = useState('ethylene');
     const [isSelectorOpen, setIsSelectorOpen] = useState(false);
     const [isFullscreen, setIsFullscreen] = useState(false);
     const [isAutoRotate, setIsAutoRotate] = useState(false);
     const viewerPanelRef = useRef();
+
+    const selectedMolecule = MOLECULE_LIBRARY[selectedMoleculeKey];
+
+    // Check if we have simulation data for this molecule
+    const simulationData = selectedMoleculeKey === 'ethylene' ? ethyleneSimulation : null;
+
+    useEffect(() => {
+        // Disable auto-rotate if simulation is present
+        if (simulationData) {
+            setIsAutoRotate(false);
+        } else {
+            setIsAutoRotate(true);
+        }
+    }, [selectedMoleculeKey, simulationData]);
 
     const molecules = [
         { key: 'ethylene', data: MOLECULE_LIBRARY.ethylene, icon: Atom, color: '#22d3ee', category: 'Polyethylene' },
@@ -21,8 +36,8 @@ const MaterialHub = () => {
         { key: 'hexamethylenediamine', data: MOLECULE_LIBRARY.hexamethylenediamine, icon: FlaskConical, color: '#fbbf24', category: 'Nylon-6,6' },
     ];
 
-    const handleMoleculeSelect = (molecule) => {
-        setSelectedMolecule(molecule.data);
+    const handleMoleculeSelect = (key) => {
+        setSelectedMoleculeKey(key);
         setIsSelectorOpen(false);
     };
 
@@ -41,15 +56,12 @@ const MaterialHub = () => {
     };
 
     // Listen for fullscreen changes
-    React.useEffect(() => {
+    useEffect(() => {
         const handleFullscreenChange = () => {
             const isNowFullscreen = !!document.fullscreenElement;
-
-            // Refresh page when exiting fullscreen to reset layout
             if (!isNowFullscreen && isFullscreen) {
                 window.location.reload();
             }
-
             setIsFullscreen(isNowFullscreen);
         };
 
@@ -88,8 +100,8 @@ const MaterialHub = () => {
                         {molecules.map((molecule) => (
                             <button
                                 key={molecule.key}
-                                className={`${styles.moleculeOption} ${selectedMolecule.name === molecule.data.name ? styles.active : ''}`}
-                                onClick={() => handleMoleculeSelect(molecule)}
+                                className={`${styles.moleculeOption} ${selectedMoleculeKey === molecule.key ? styles.active : ''}`}
+                                onClick={() => handleMoleculeSelect(molecule.key)}
                                 style={{ '--card-color': molecule.color }}
                             >
                                 <molecule.icon size={20} />
@@ -115,20 +127,41 @@ const MaterialHub = () => {
                     >
                         {isFullscreen ? <Minimize size={20} /> : <Maximize size={20} />}
                     </button>
-                    <button
-                        className={`${styles.autoRotateButton} ${isAutoRotate ? styles.active : ''}`}
-                        onClick={() => setIsAutoRotate(!isAutoRotate)}
-                        title={isAutoRotate ? "Stop Auto-Rotate" : "Start Auto-Rotate"}
-                    >
-                        <RotateCw size={20} />
-                    </button>
-                    <MoleculeViewer molecule={selectedMolecule} autoRotate={isAutoRotate} />
+                    {!simulationData && (
+                        <button
+                            className={`${styles.autoRotateButton} ${isAutoRotate ? styles.active : ''}`}
+                            onClick={() => setIsAutoRotate(!isAutoRotate)}
+                            title={isAutoRotate ? "Stop Auto-Rotate" : "Start Auto-Rotate"}
+                        >
+                            <RotateCw size={20} />
+                        </button>
+                    )}
+
+                    <MoleculeViewer
+                        molecule={selectedMolecule}
+                        simulationData={simulationData}
+                        autoRotate={isAutoRotate}
+                    />
                 </div>
 
                 {/* Information Panel */}
                 {!isFullscreen && (
                     <div className={styles.infoPanel}>
                         <h2>{selectedMolecule.name}</h2>
+
+                        {simulationData && (
+                            <div style={{
+                                background: 'rgba(34, 197, 94, 0.1)',
+                                border: '1px solid #22c55e',
+                                color: '#22c55e',
+                                padding: '10px',
+                                borderRadius: '8px',
+                                marginBottom: '15px',
+                                fontSize: '0.9rem'
+                            }}>
+                                <strong>⚡ Simulation Active:</strong> Displaying {simulationData.length} frames of energy minimization.
+                            </div>
+                        )}
 
                         <div className={styles.infoGrid}>
                             <div className={styles.infoItem}>
@@ -187,22 +220,12 @@ const MaterialHub = () => {
             <div className={styles.legend}>
                 <h3>CPK Color Scheme</h3>
                 <div className={styles.legendGrid}>
-                    <div className={styles.legendItem}>
-                        <span className={styles.atomDot} style={{ background: '#FFFFFF' }}></span>
-                        <span>Hydrogen (H)</span>
-                    </div>
-                    <div className={styles.legendItem}>
-                        <span className={styles.atomDot} style={{ background: '#909090' }}></span>
-                        <span>Carbon (C)</span>
-                    </div>
-                    <div className={styles.legendItem}>
-                        <span className={styles.atomDot} style={{ background: '#3050F8' }}></span>
-                        <span>Nitrogen (N)</span>
-                    </div>
-                    <div className={styles.legendItem}>
-                        <span className={styles.atomDot} style={{ background: '#FF0D0D' }}></span>
-                        <span>Oxygen (O)</span>
-                    </div>
+                    {Object.entries(ATOM_COLORS).map(([element, color]) => (
+                        <div key={element} className={styles.legendItem}>
+                            <span className={styles.atomDot} style={{ background: color }}></span>
+                            <span>{element}</span>
+                        </div>
+                    ))}
                 </div>
             </div>
         </div>
