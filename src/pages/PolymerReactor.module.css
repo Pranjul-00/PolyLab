@@ -45,9 +45,87 @@
     margin: 0;
 }
 
-/* Selector Section */
-.selectorSection {
+/* Mixture Selector */
+.mixtureGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+}
+
+.mixtureButton {
+    padding: 0.5rem;
+    font-size: var(--text-xs);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-md);
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.mixtureButton:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.mixtureButton.active {
+    background: rgba(244, 114, 182, 0.2);
+    border-color: #f472b6;
+    color: #f472b6;
+}
+
+/* Polymerization Controls */
+.polymerizationControls {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
     margin-bottom: var(--space-lg);
+    background: rgba(0, 0, 0, 0.2);
+    padding: var(--space-md);
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.playButton {
+    grid-column: 1 / 2;
+    padding: 0.75rem;
+    background: var(--color-accent-green);
+    color: #000;
+    border: none;
+    border-radius: var(--radius-md);
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.playButton.stop {
+    background: #ef4444;
+    color: #fff;
+}
+
+.resetPolyBtn {
+    grid-column: 2 / 3;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+}
+
+.speedControl {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.speedControl label {
+    font-size: 10px;
+    color: var(--color-text-tertiary);
+    text-transform: uppercase;
+}
+
+.speedControl input {
+    width: 100%;
 }
 
 .sectionLabel {

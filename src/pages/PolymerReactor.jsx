@@ -19,54 +19,107 @@ function PolymerReactor() {
     const [monomerCount, setMonomerCount] = useState(50);
     const [branchDensity, setBranchDensity] = useState(20);
     const [crosslinkDensity, setCrosslinkDensity] = useState(25);
+    const [monomerMixture, setMonomerMixture] = useState("A"); // A, B, or AB
+    
+    // Animation state
+    const [currentMonomerIndex, setCurrentMonomerIndex] = useState(0);
+    const [isPolymerizing, setIsPolymerizing] = useState(false);
+    const [reactionSpeed, setReactionSpeed] = useState(100); // ms per step
 
     const graphRef = useRef();
     const visualizationRef = useRef();
     const rotationRef = useRef();
+    const polymerizationTimerRef = useRef();
 
     // Polymer information database
     const polymerInfo = {
         linear: {
             title: "Linear Polymer",
-            example: "High-Density Polyethylene (HDPE)",
+            example: "HDPE / PVC",
             graphType: "Path Graph (Pₙ)",
-            structure: "Chains pack tightly together due to lack of branching.",
-            properties: "High density, high tensile strength, rigid structure.",
-            applications: "Milk jugs, detergent bottles, piping systems",
+            structure: "Long, straight chains that pack efficiently.",
+            properties: "High crystallinity, high melting point, tough.",
             color: "#22d3ee"
         },
         branched: {
             title: "Branched Polymer",
-            example: "Low-Density Polyethylene (LDPE)",
+            example: "LDPE / Glycogen",
             graphType: "Tree Graph (Tₙ)",
-            structure: "Side chains prevent tight packing of polymer chains.",
-            properties: "Lower density, flexible, lower melting point.",
-            applications: "Plastic bags, squeeze bottles, flexible containers",
+            structure: "Side chains prevent tight packing of backbones.",
+            properties: "Flexible, lower density, lower tensile strength.",
             color: "#4ade80"
         },
         crosslinked: {
             title: "Cross-Linked Polymer",
-            example: "Bakelite / Vulcanized Rubber",
-            graphType: "Mesh/Cyclic Graph",
-            structure: "Covalent bonds connect parallel chains into a 3D network.",
-            properties: "Thermosetting, extremely hard, cannot be remelted.",
-            applications: "Electrical insulators, cookware handles, tires",
+            example: "Bakelite / Rubber",
+            graphType: "3D Network Mesh",
+            structure: "Chains interconnected by covalent bonds.",
+            properties: "Insoluble, infusible (thermoset), dimensional stability.",
             color: "#a78bfa"
         }
     };
 
-    useEffect(() => {
-        let data;
+    // Full graph data generation
+    const generateFullData = () => {
         if (polymerType === "linear") {
-            data = generateLinear(monomerCount);
+            return generateLinear(monomerCount, monomerMixture);
         } else if (polymerType === "branched") {
-            data = generateBranched(monomerCount, branchDensity);
+            return generateBranched(monomerCount, branchDensity, monomerMixture);
         } else if (polymerType === "crosslinked") {
-            data = generateCrossLinked(Math.floor(monomerCount / 2), crosslinkDensity);
+            return generateCrossLinked(Math.floor(monomerCount / 2), crosslinkDensity, monomerMixture);
         }
-        setGraphData(data);
+        return { nodes: [], links: [] };
+    };
+
+    // Handle polymerization animation
+    useEffect(() => {
+        if (!isPolymerizing) {
+            clearInterval(polymerizationTimerRef.current);
+            return;
+        }
+
+        polymerizationTimerRef.current = setInterval(() => {
+            setCurrentMonomerIndex(prev => {
+                const fullData = generateFullData();
+                if (prev >= fullData.nodes.length) {
+                    setIsPolymerizing(false);
+                    return prev;
+                }
+                return prev + 1;
+            });
+        }, 1000 - reactionSpeed * 9); // Scale 0-100 to 1000ms-10ms
+
+        return () => clearInterval(polymerizationTimerRef.current);
+    }, [isPolymerizing, reactionSpeed, polymerType, monomerCount, branchDensity, crosslinkDensity, monomerMixture]);
+
+    // Update visible graph data based on animation index
+    useEffect(() => {
+        const fullData = generateFullData();
+        
+        if (isPolymerizing || currentMonomerIndex < fullData.nodes.length) {
+            const visibleNodes = fullData.nodes.slice(0, currentMonomerIndex);
+            const visibleNodeIds = new Set(visibleNodes.map(n => n.id));
+            const visibleLinks = fullData.links.filter(l => 
+                visibleNodeIds.has(typeof l.source === 'object' ? l.source.id : l.source) && 
+                visibleNodeIds.has(typeof l.target === 'object' ? l.target.id : l.target)
+            );
+            setGraphData({ nodes: visibleNodes, links: visibleLinks });
+        } else {
+            setGraphData(fullData);
+        }
+        
         setSelectedNode(null);
-    }, [polymerType, monomerCount, branchDensity, crosslinkDensity]);
+    }, [polymerType, monomerCount, branchDensity, crosslinkDensity, monomerMixture, currentMonomerIndex]);
+
+    const startPolymerization = () => {
+        setCurrentMonomerIndex(1);
+        setIsPolymerizing(true);
+    };
+
+    const resetPolymerization = () => {
+        setIsPolymerizing(false);
+        setCurrentMonomerIndex(monomerCount + 50); // Set to max to show full
+    };
 
     // Listen for fullscreen changes
     useEffect(() => {
@@ -257,6 +310,54 @@ function PolymerReactor() {
                     )}
                 </div>
 
+                {/* Monomer Mixture Selector */}
+                <div className={styles.selectorSection}>
+                    <label className={styles.sectionLabel}>Monomer Mixture</label>
+                    <div className={styles.mixtureGrid}>
+                        <button
+                            className={`${styles.mixtureButton} ${monomerMixture === "A" ? styles.active : ""}`}
+                            onClick={() => setMonomerMixture("A")}
+                        >
+                            Pure A
+                        </button>
+                        <button
+                            className={`${styles.mixtureButton} ${monomerMixture === "B" ? styles.active : ""}`}
+                            onClick={() => setMonomerMixture("B")}
+                        >
+                            Pure B
+                        </button>
+                        <button
+                            className={`${styles.mixtureButton} ${monomerMixture === "AB" ? styles.active : ""}`}
+                            onClick={() => setMonomerMixture("AB")}
+                        >
+                            Copolymer (A-B)
+                        </button>
+                    </div>
+                </div>
+
+                {/* Polymerization Controls */}
+                <div className={styles.polymerizationControls}>
+                    <button
+                        className={`${styles.playButton} ${isPolymerizing ? styles.stop : ""}`}
+                        onClick={isPolymerizing ? () => setIsPolymerizing(false) : startPolymerization}
+                    >
+                        {isPolymerizing ? "Stop Reaction" : "Start Polymerization"}
+                    </button>
+                    <button className={styles.resetPolyBtn} onClick={resetPolymerization}>
+                        Full Structure
+                    </button>
+                    <div className={styles.speedControl}>
+                        <label>Reaction Speed</label>
+                        <input
+                            type="range"
+                            min="0"
+                            max="100"
+                            value={reactionSpeed}
+                            onChange={(e) => setReactionSpeed(parseInt(e.target.value))}
+                        />
+                    </div>
+                </div>
+
                 {/* Graph Statistics */}
                 <div className={styles.statsSection}>
                     <div className={styles.statCard}>
@@ -267,10 +368,10 @@ function PolymerReactor() {
                         <div className={styles.statLabel}>Edges</div>
                         <div className={styles.statValue}>{graphProps.edgeCount}</div>
                     </div>
-                    <div className={styles.statCard}>
-                        <div className={styles.statLabel}>Avg Degree</div>
-                        <div className={styles.statValue} style={{ fontSize: '0.875rem' }}>
-                            {graphProps.avgDegree}
+                    <div className={styles.statCard} title="Radius of Gyration">
+                        <div className={styles.statLabel}>Est. Rg</div>
+                        <div className={styles.statValue} style={{ fontSize: '0.8rem' }}>
+                            {graphProps.theoreticalRg}
                         </div>
                     </div>
                 </div>
@@ -351,7 +452,9 @@ function PolymerReactor() {
                         nodeLabel={node => `${node.name || node.id} (${node.type})`}
                         nodeColor={node => {
                             if (selectedNode && node.id === selectedNode.id) return "#ffff00";
-                            return node.group === 2 ? "#ff4444" : currentInfo.color;
+                            if (node.group === 3) return "#ff4444"; // Branch point
+                            if (node.group === 2) return "#f472b6"; // Monomer B (Pink)
+                            return currentInfo.color; // Monomer A
                         }}
                         linkColor={() => "rgba(255,255,255,0.6)"}
                         nodeResolution={16}
