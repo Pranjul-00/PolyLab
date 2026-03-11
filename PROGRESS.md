@@ -4,10 +4,12 @@ This file records all major milestones and updates to the PolyLab project.
 
 ---
 
-### [2026-03-11 14:30] Initial Reactivation
-- **Status**: Re-starting the project after 2 months.
+### [2026-03-11 15:15] Material Hub Upgrade (Dynamic 3D)
+- **Status**: Completed upgrade from static to dynamic molecular visualization.
 - **Achievements**:
-    - Established foundational documentation (`GEMINI.md`, `PROGRESS.md`).
-    - Explored existing codebase: Phase 2 (3D Material Hub and Polymer Reactor) is functional.
-    - Verified tech stack: React 19, Vite, Three.js, 3Dmol.js, react-force-graph-3d.
-- **Next Steps**: Propose and implement "Phase 4" to elevate the project beyond a simple visualizer.
+    - Replaced custom Three.js renderer with **3Dmol.js** for scientific accuracy.
+    - Integrated **PubChem API** to fetch 3D SDF structures on-the-fly.
+    - Added **Visualization Modes**: Ball & Stick, Sticks, Spheres, and Molecular Surface.
+    - Implemented **Thermal Vibration Simulation** for dynamic molecular behavior.
+    - Simplified UI to focus on the high-fidelity viewer.
+- **Next Steps**: Enhance "Polymer Reactor" with interactive chain growth or property prediction.

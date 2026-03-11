@@ -145,23 +145,19 @@
     white-space: nowrap;
 }
 
-/* Main Content - Side by Side */
-.mainContent {
-    display: grid;
-    grid-template-columns: 1fr 400px;
-    gap: var(--space-lg);
-    margin-bottom: var(--space-xl);
+/* Main Content - Simplified */
+.singleContent {
+    max-width: 1000px;
+    margin: 0 auto;
 }
 
-/* Viewer Panel */
-.viewerPanel {
-    position: relative;
+.viewerWrapper {
     background: var(--glass-bg);
     backdrop-filter: blur(var(--glass-blur));
     border: 1px solid var(--glass-border);
     border-radius: var(--radius-xl);
     padding: var(--space-lg);
-    min-height: 600px;
+    min-height: 800px;
 }
 
 /* Fullscreen Button */
