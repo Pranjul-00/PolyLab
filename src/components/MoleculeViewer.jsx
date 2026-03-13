@@ -23,7 +23,7 @@ function MoleculeViewer({ molecule, autoRotate = false }) {
 
         // Scene setup
         const scene = new THREE.Scene();
-        scene.background = new THREE.Color(0x050505);
+        scene.background = new THREE.Color(0x0a0a0f);
         sceneRef.current = scene;
 
         // Camera setup
