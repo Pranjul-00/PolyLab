@@ -456,17 +456,18 @@ function PolymerReactor() {
                             if (node.group === 2) return "#f472b6"; // Monomer B (Pink)
                             return currentInfo.color; // Monomer A
                         }}
-                        linkColor={() => "rgba(255,255,255,0.6)"}
-                        nodeResolution={16}
-                        backgroundColor="#050505"
+                        linkColor={() => "rgba(255,255,255,0.4)"}
+                        nodeResolution={24}
+                        backgroundColor="#0a0a0f"
                         showNavInfo={false}
-                        nodeRelSize={6}
-                        linkWidth={4}
+                        nodeRelSize={5}
+                        linkWidth={3}
                         onNodeClick={handleNodeClick}
                         nodeOpacity={0.9}
                         controlType="orbit"
                         enablePointerInteraction={true}
-                        d3VelocityDecay={0.3}
+                        d3VelocityDecay={0.2}
+                        d3AlphaDecay={0.02}
                     />
                 </div>
 

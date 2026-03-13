@@ -51,16 +51,20 @@ function MoleculeViewer({ molecule, autoRotate = false }) {
         controlsRef.current = controls;
 
         // Lighting
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
         scene.add(ambientLight);
 
-        const directionalLight1 = new THREE.DirectionalLight(0xffffff, 0.5);
+        const directionalLight1 = new THREE.DirectionalLight(0xffffff, 0.8);
         directionalLight1.position.set(5, 5, 5);
         scene.add(directionalLight1);
 
-        const directionalLight2 = new THREE.DirectionalLight(0xffffff, 0.3);
-        directionalLight2.position.set(-5, -5, -5);
+        const directionalLight2 = new THREE.DirectionalLight(0xffffff, 0.5);
+        directionalLight2.position.set(-5, -5, 5);
         scene.add(directionalLight2);
+
+        const directionalLight3 = new THREE.DirectionalLight(0xffffff, 0.3);
+        directionalLight3.position.set(0, -5, -5);
+        scene.add(directionalLight3);
 
         // Create atoms
         molecule.atoms.forEach((atom) => {
@@ -68,10 +72,10 @@ function MoleculeViewer({ molecule, autoRotate = false }) {
             const geometry = new THREE.SphereGeometry(radius, 32, 32);
             const material = new THREE.MeshPhongMaterial({
                 color: ATOM_COLORS[atom.element] || 0xcccccc,
-                shininess: 30,
+                shininess: 60,
+                specular: 0x444444
             });
             const sphere = new THREE.Mesh(geometry, material);
-            // Initial position
             sphere.position.set(atom.x, atom.y, atom.z);
             scene.add(sphere);
 
@@ -90,7 +94,7 @@ function MoleculeViewer({ molecule, autoRotate = false }) {
             const spriteMaterial = new THREE.SpriteMaterial({ map: texture, sizeAttenuation: false });
             const sprite = new THREE.Sprite(spriteMaterial);
             sprite.position.set(atom.x, atom.y + radius + 0.3, atom.z);
-            sprite.scale.set(0.15, 0.15, 1);
+            sprite.scale.set(0.12, 0.12, 1);
             scene.add(sprite);
         });
 
@@ -105,27 +109,43 @@ function MoleculeViewer({ molecule, autoRotate = false }) {
             const length = direction.length();
             const midpoint = new THREE.Vector3().addVectors(start, end).multiplyScalar(0.5);
 
-            // Cylinder for bond
-            const bondRadius = bond.order === 2 ? 0.08 : 0.06;
-            const geometry = new THREE.CylinderGeometry(bondRadius, bondRadius, length, 8);
-            const material = new THREE.MeshPhongMaterial({ color: 0x666666 });
-            const cylinder = new THREE.Mesh(geometry, material);
+            // Bond visual properties
+            const bondRadius = 0.12;
+            const material = new THREE.MeshPhongMaterial({ 
+                color: 0x888888,
+                shininess: 40
+            });
 
-            // Position and rotate cylinder
-            cylinder.position.copy(midpoint);
-            cylinder.quaternion.setFromUnitVectors(
-                new THREE.Vector3(0, 1, 0),
-                direction.clone().normalize()
-            );
-
-            scene.add(cylinder);
-
-            // For double bonds, add a second cylinder slightly offset
             if (bond.order === 2) {
-                const offset = new THREE.Vector3(0.15, 0, 0);
-                const cylinder2 = cylinder.clone();
-                cylinder2.position.add(offset);
-                scene.add(cylinder2);
+                // For double bonds, calculate an offset perpendicular to the bond direction
+                // and pointing slightly towards the camera for visibility
+                const up = new THREE.Vector3(0, 1, 0);
+                const side = new THREE.Vector3().crossVectors(direction, up).normalize();
+                if (side.lengthSq() < 0.001) {
+                    side.set(1, 0, 0);
+                }
+                const offset = side.multiplyScalar(0.15);
+
+                [1, -1].forEach(sign => {
+                    const geometry = new THREE.CylinderGeometry(0.08, 0.08, length, 12);
+                    const cylinder = new THREE.Mesh(geometry, material);
+                    const pos = midpoint.clone().add(offset.clone().multiplyScalar(sign));
+                    cylinder.position.copy(pos);
+                    cylinder.quaternion.setFromUnitVectors(
+                        new THREE.Vector3(0, 1, 0),
+                        direction.clone().normalize()
+                    );
+                    scene.add(cylinder);
+                });
+            } else {
+                const geometry = new THREE.CylinderGeometry(bondRadius, bondRadius, length, 12);
+                const cylinder = new THREE.Mesh(geometry, material);
+                cylinder.position.copy(midpoint);
+                cylinder.quaternion.setFromUnitVectors(
+                    new THREE.Vector3(0, 1, 0),
+                    direction.clone().normalize()
+                );
+                scene.add(cylinder);
             }
         });
 

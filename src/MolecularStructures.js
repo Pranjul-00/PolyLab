@@ -28,7 +28,7 @@ export const ATOM_RADII = {
 
 /**
  * Ethylene (C2H4) - Monomer for Polyethylene
- * Simplified planar structure
+ * Planar structure (X-Y plane)
  */
 export const ETHYLENE = {
     name: "Ethylene",
@@ -50,12 +50,12 @@ export const ETHYLENE = {
         "Wire insulation"
     ],
     atoms: [
-        { id: 0, element: 'C', x: 0, y: 0, z: 0 },
-        { id: 1, element: 'C', x: 1.34, y: 0, z: 0 },
-        { id: 2, element: 'H', x: -0.6, y: 0.9, z: 0 },
-        { id: 3, element: 'H', x: -0.6, y: -0.9, z: 0 },
-        { id: 4, element: 'H', x: 1.94, y: 0.9, z: 0 },
-        { id: 5, element: 'H', x: 1.94, y: -0.9, z: 0 },
+        { id: 0, element: 'C', x: -0.67, y: 0, z: 0 },
+        { id: 1, element: 'C', x: 0.67, y: 0, z: 0 },
+        { id: 2, element: 'H', x: -1.23, y: 0.94, z: 0 },
+        { id: 3, element: 'H', x: -1.23, y: -0.94, z: 0 },
+        { id: 4, element: 'H', x: 1.23, y: 0.94, z: 0 },
+        { id: 5, element: 'H', x: 1.23, y: -0.94, z: 0 },
     ],
     bonds: [
         { source: 0, target: 1, order: 2 }, // C=C double bond
@@ -68,7 +68,7 @@ export const ETHYLENE = {
 
 /**
  * Styrene (C8H8) - Monomer for Polystyrene
- * Benzene ring attached to vinyl group
+ * Benzene ring with a rotated vinyl group (3D)
  */
 export const STYRENE = {
     name: "Styrene",
@@ -84,45 +84,48 @@ export const STYRENE = {
     },
     applications: ["Expanded polystyrene (EPS) foam", "Disposable cups and containers", "Packaging materials", "Insulation boards", "CD/DVD cases"],
     atoms: [
-        // Vinyl group (C=C)
-        { id: 0, element: 'C', x: 0, y: 0, z: 0 },
-        { id: 1, element: 'C', x: 1.34, y: 0, z: 0 },
-        { id: 2, element: 'H', x: -0.6, y: 0.9, z: 0 },
-        { id: 3, element: 'H', x: -0.6, y: -0.9, z: 0 },
-        { id: 4, element: 'H', x: 1.94, y: 0.9, z: 0 },
-        // Benzene ring
-        { id: 5, element: 'C', x: 2.5, y: -0.7, z: 0 },
-        { id: 6, element: 'C', x: 3.8, y: -0.3, z: 0 },
-        { id: 7, element: 'C', x: 4.3, y: 1.0, z: 0 },
-        { id: 8, element: 'C', x: 3.5, y: 2.0, z: 0 },
-        { id: 9, element: 'C', x: 2.2, y: 1.6, z: 0 },
-        { id: 10, element: 'C', x: 1.7, y: 0.3, z: 0 },
+        // Benzene ring (Planar in X-Y)
+        { id: 0, element: 'C', x: 0, y: 1.39, z: 0 },
+        { id: 1, element: 'C', x: 1.2, y: 0.69, z: 0 },
+        { id: 2, element: 'C', x: 1.2, y: -0.69, z: 0 },
+        { id: 3, element: 'C', x: 0, y: -1.39, z: 0 },
+        { id: 4, element: 'C', x: -1.2, y: -0.69, z: 0 },
+        { id: 5, element: 'C', x: -1.2, y: 0.69, z: 0 },
         // Hydrogens on benzene
-        { id: 11, element: 'H', x: 2.1, y: -1.7, z: 0 },
-        { id: 12, element: 'H', x: 4.4, y: -1.1, z: 0 },
-        { id: 13, element: 'H', x: 5.3, y: 1.3, z: 0 },
-        { id: 14, element: 'H', x: 3.9, y: 3.0, z: 0 },
-        { id: 15, element: 'H', x: 1.6, y: 2.4, z: 0 },
+        { id: 6, element: 'H', x: 0, y: 2.48, z: 0 },
+        { id: 7, element: 'H', x: 2.14, y: 1.23, z: 0 },
+        { id: 8, element: 'H', x: 2.14, y: -1.23, z: 0 },
+        { id: 9, element: 'H', x: 0, y: -2.48, z: 0 },
+        { id: 10, element: 'H', x: -2.14, y: -1.23, z: 0 },
+        // Vinyl group (Rotated by 30 degrees from X-Y plane for 3D depth)
+        { id: 11, element: 'C', x: -2.5, y: 1.45, z: 0.1 },
+        { id: 12, element: 'C', x: -3.7, y: 0.9, z: 0.4 },
+        { id: 13, element: 'H', x: -2.4, y: 2.5, z: 0.1 },
+        { id: 14, element: 'H', x: -3.8, y: -0.15, z: 0.4 },
+        { id: 15, element: 'H', x: -4.6, y: 1.5, z: 0.6 },
     ],
     bonds: [
+        // Benzene ring
         { source: 0, target: 1, order: 2 },
-        { source: 0, target: 2, order: 1 },
-        { source: 0, target: 3, order: 1 },
-        { source: 1, target: 4, order: 1 },
-        { source: 1, target: 10, order: 1 },
-        // Benzene ring bonds
-        { source: 5, target: 6, order: 2 },
-        { source: 6, target: 7, order: 1 },
-        { source: 7, target: 8, order: 2 },
-        { source: 8, target: 9, order: 1 },
-        { source: 9, target: 10, order: 2 },
-        { source: 10, target: 5, order: 1 },
-        // Hydrogen bonds
+        { source: 1, target: 2, order: 1 },
+        { source: 2, target: 3, order: 2 },
+        { source: 3, target: 4, order: 1 },
+        { source: 4, target: 5, order: 2 },
+        { source: 5, target: 0, order: 1 },
+        // Vinyl attachment
         { source: 5, target: 11, order: 1 },
-        { source: 6, target: 12, order: 1 },
-        { source: 7, target: 13, order: 1 },
-        { source: 8, target: 14, order: 1 },
-        { source: 9, target: 15, order: 1 },
+        // Vinyl double bond
+        { source: 11, target: 12, order: 2 },
+        // Benzene Hydrogens
+        { source: 0, target: 6, order: 1 },
+        { source: 1, target: 7, order: 1 },
+        { source: 2, target: 8, order: 1 },
+        { source: 3, target: 9, order: 1 },
+        { source: 4, target: 10, order: 1 },
+        // Vinyl Hydrogens
+        { source: 11, target: 13, order: 1 },
+        { source: 12, target: 14, order: 1 },
+        { source: 12, target: 15, order: 1 },
     ],
 };
 
@@ -143,25 +146,25 @@ export const PHENOL = {
     },
     applications: ["Electrical insulators", "Billiard balls", "Circuit boards", "Heat-resistant handles", "Adhesives and coatings"],
     atoms: [
-        // Benzene ring
-        { id: 0, element: 'C', x: 0, y: 0, z: 0 },
-        { id: 1, element: 'C', x: 1.4, y: 0, z: 0 },
-        { id: 2, element: 'C', x: 2.1, y: 1.2, z: 0 },
-        { id: 3, element: 'C', x: 1.4, y: 2.4, z: 0 },
-        { id: 4, element: 'C', x: 0, y: 2.4, z: 0 },
-        { id: 5, element: 'C', x: -0.7, y: 1.2, z: 0 },
-        // OH group
-        { id: 6, element: 'O', x: -0.7, y: -1.2, z: 0 },
-        { id: 7, element: 'H', x: -1.6, y: -1.2, z: 0 },
-        // Hydrogens on benzene
-        { id: 8, element: 'H', x: 1.9, y: -0.9, z: 0 },
-        { id: 9, element: 'H', x: 3.1, y: 1.2, z: 0 },
-        { id: 10, element: 'H', x: 1.9, y: 3.3, z: 0 },
-        { id: 11, element: 'H', x: -0.5, y: 3.3, z: 0 },
-        { id: 12, element: 'H', x: -1.7, y: 1.2, z: 0 },
+        // Benzene ring (Planar in X-Y)
+        { id: 0, element: 'C', x: 0, y: 1.39, z: 0 },
+        { id: 1, element: 'C', x: 1.2, y: 0.69, z: 0 },
+        { id: 2, element: 'C', x: 1.2, y: -0.69, z: 0 },
+        { id: 3, element: 'C', x: 0, y: -1.39, z: 0 },
+        { id: 4, element: 'C', x: -1.2, y: -0.69, z: 0 },
+        { id: 5, element: 'C', x: -1.2, y: 0.69, z: 0 },
+        // Hydrogens
+        { id: 6, element: 'H', x: 2.14, y: 1.23, z: 0 },
+        { id: 7, element: 'H', x: 2.14, y: -1.23, z: 0 },
+        { id: 8, element: 'H', x: 0, y: -2.48, z: 0 },
+        { id: 9, element: 'H', x: -2.14, y: -1.23, z: 0 },
+        { id: 10, element: 'H', x: -2.14, y: 1.23, z: 0 },
+        // OH group (Rotated for 3D)
+        { id: 11, element: 'O', x: 0, y: 2.75, z: 0.1 },
+        { id: 12, element: 'H', x: 0.8, y: 3.2, z: 0.2 },
     ],
     bonds: [
-        // Benzene ring
+        // Benzene
         { source: 0, target: 1, order: 2 },
         { source: 1, target: 2, order: 1 },
         { source: 2, target: 3, order: 2 },
@@ -169,14 +172,14 @@ export const PHENOL = {
         { source: 4, target: 5, order: 2 },
         { source: 5, target: 0, order: 1 },
         // OH group
-        { source: 0, target: 6, order: 1 },
-        { source: 6, target: 7, order: 1 },
+        { source: 0, target: 11, order: 1 },
+        { source: 11, target: 12, order: 1 },
         // Hydrogens
-        { source: 1, target: 8, order: 1 },
-        { source: 2, target: 9, order: 1 },
-        { source: 3, target: 10, order: 1 },
-        { source: 4, target: 11, order: 1 },
-        { source: 5, target: 12, order: 1 },
+        { source: 1, target: 6, order: 1 },
+        { source: 2, target: 7, order: 1 },
+        { source: 3, target: 8, order: 1 },
+        { source: 4, target: 9, order: 1 },
+        { source: 5, target: 10, order: 1 },
     ],
 };
 
@@ -211,6 +214,7 @@ export const FORMALDEHYDE = {
 
 /**
  * Adipic Acid (HOOC-(CH2)4-COOH) - Component of Nylon-6,6
+ * 3D Zig-zag chain
  */
 export const ADIPIC_ACID = {
     name: "Adipic Acid",
@@ -226,55 +230,52 @@ export const ADIPIC_ACID = {
     },
     applications: ["Nylon-6,6 production", "Plasticizers", "Polyurethane foams", "Food acidulant"],
     atoms: [
-        // First COOH group
-        { id: 0, element: 'C', x: 0, y: 0, z: 0 },
-        { id: 1, element: 'O', x: -0.6, y: 1.2, z: 0 },
-        { id: 2, element: 'O', x: -0.6, y: -1.2, z: 0 },
-        { id: 3, element: 'H', x: -1.5, y: -1.2, z: 0 },
-        // Carbon chain
-        { id: 4, element: 'C', x: 1.5, y: 0, z: 0 },
-        { id: 5, element: 'C', x: 2.2, y: 1.3, z: 0 },
-        { id: 6, element: 'C', x: 3.7, y: 1.3, z: 0 },
-        { id: 7, element: 'C', x: 4.4, y: 0, z: 0 },
-        // Second COOH group
-        { id: 8, element: 'C', x: 5.9, y: 0, z: 0 },
-        { id: 9, element: 'O', x: 6.5, y: 1.2, z: 0 },
-        { id: 10, element: 'O', x: 6.5, y: -1.2, z: 0 },
-        { id: 11, element: 'H', x: 7.4, y: -1.2, z: 0 },
-        // Hydrogens on carbon chain
-        { id: 12, element: 'H', x: 1.8, y: -0.9, z: 0 },
-        { id: 13, element: 'H', x: 1.8, y: -0.9, z: 0.8 },
-        { id: 14, element: 'H', x: 1.9, y: 2.2, z: 0 },
-        { id: 15, element: 'H', x: 1.9, y: 2.2, z: 0.8 },
-        { id: 16, element: 'H', x: 4.0, y: 2.2, z: 0 },
-        { id: 17, element: 'H', x: 4.0, y: 2.2, z: 0.8 },
-        { id: 18, element: 'H', x: 4.1, y: -0.9, z: 0 },
-        { id: 19, element: 'H', x: 4.1, y: -0.9, z: 0.8 },
+        // Zig-zag carbon chain in 3D
+        { id: 0, element: 'C', x: -2.5, y: -0.5, z: 0.4 }, // COOH C
+        { id: 1, element: 'C', x: -1.2, y: 0.3, z: 0 },
+        { id: 2, element: 'C', x: 0, y: -0.5, z: 0.4 },
+        { id: 3, element: 'C', x: 1.2, y: 0.3, z: 0 },
+        { id: 4, element: 'C', x: 2.5, y: -0.5, z: 0.4 },
+        { id: 5, element: 'C', x: 3.7, y: 0.3, z: 0 }, // COOH C
+        // Functional groups
+        { id: 6, element: 'O', x: -2.5, y: -1.7, z: 0.6 }, // =O
+        { id: 7, element: 'O', x: -3.7, y: 0.2, z: 0.5 }, // -OH
+        { id: 8, element: 'H', x: -4.5, y: -0.3, z: 0.6 },
+        { id: 9, element: 'O', x: 3.7, y: 1.5, z: -0.2 }, // =O
+        { id: 10, element: 'O', x: 4.9, y: -0.4, z: -0.1 }, // -OH
+        { id: 11, element: 'H', x: 5.7, y: 0.1, z: -0.1 },
+        // Hydrogens on chain
+        { id: 12, element: 'H', x: -1.2, y: 1.2, z: 0.6 },
+        { id: 13, element: 'H', x: -1.2, y: 0.6, z: -1.0 },
+        { id: 14, element: 'H', x: 0, y: -1.4, z: -0.2 },
+        { id: 15, element: 'H', x: 0, y: -0.8, z: 1.4 },
+        { id: 16, element: 'H', x: 1.2, y: 1.2, z: 0.6 },
+        { id: 17, element: 'H', x: 1.2, y: 0.6, z: -1.0 },
+        { id: 18, element: 'H', x: 2.5, y: -1.4, z: -0.2 },
+        { id: 19, element: 'H', x: 2.5, y: -0.8, z: 1.4 },
     ],
     bonds: [
-        // First COOH
-        { source: 0, target: 1, order: 2 },
-        { source: 0, target: 2, order: 1 },
+        { source: 0, target: 1, order: 1 },
+        { source: 1, target: 2, order: 1 },
         { source: 2, target: 3, order: 1 },
-        { source: 0, target: 4, order: 1 },
-        // Carbon chain
+        { source: 3, target: 4, order: 1 },
         { source: 4, target: 5, order: 1 },
-        { source: 5, target: 6, order: 1 },
-        { source: 6, target: 7, order: 1 },
+        // COOH groups
+        { source: 0, target: 6, order: 2 },
+        { source: 0, target: 7, order: 1 },
         { source: 7, target: 8, order: 1 },
-        // Second COOH
-        { source: 8, target: 9, order: 2 },
-        { source: 8, target: 10, order: 1 },
+        { source: 5, target: 9, order: 2 },
+        { source: 5, target: 10, order: 1 },
         { source: 10, target: 11, order: 1 },
         // Hydrogens
-        { source: 4, target: 12, order: 1 },
-        { source: 4, target: 13, order: 1 },
-        { source: 5, target: 14, order: 1 },
-        { source: 5, target: 15, order: 1 },
-        { source: 6, target: 16, order: 1 },
-        { source: 6, target: 17, order: 1 },
-        { source: 7, target: 18, order: 1 },
-        { source: 7, target: 19, order: 1 },
+        { source: 1, target: 12, order: 1 },
+        { source: 1, target: 13, order: 1 },
+        { source: 2, target: 14, order: 1 },
+        { source: 2, target: 15, order: 1 },
+        { source: 3, target: 16, order: 1 },
+        { source: 3, target: 17, order: 1 },
+        { source: 4, target: 18, order: 1 },
+        { source: 4, target: 19, order: 1 },
     ],
 };
 
@@ -296,36 +297,33 @@ export const HEXAMETHYLENEDIAMINE = {
     applications: ["Nylon-6,6 production", "Epoxy curing agent", "Polyurethane production", "Corrosion inhibitors"],
     atoms: [
         // First NH2 group
-        { id: 0, element: 'N', x: 0, y: 0, z: 0 },
-        { id: 1, element: 'H', x: -0.6, y: 0.9, z: 0 },
-        { id: 2, element: 'H', x: -0.6, y: -0.9, z: 0 },
-        // Carbon chain
-        { id: 3, element: 'C', x: 1.5, y: 0, z: 0 },
-        { id: 4, element: 'C', x: 2.2, y: 1.3, z: 0 },
-        { id: 5, element: 'C', x: 3.7, y: 1.3, z: 0 },
-        { id: 6, element: 'C', x: 4.4, y: 0, z: 0 },
-        { id: 7, element: 'C', x: 5.9, y: 0, z: 0 },
-        { id: 8, element: 'C', x: 6.6, y: 1.3, z: 0 },
+        { id: 0, element: 'N', x: -3.8, y: 0.5, z: 0.4 },
+        { id: 1, element: 'H', x: -4.6, y: 0.1, z: 0.8 },
+        { id: 2, element: 'H', x: -3.9, y: 1.5, z: 0.4 },
+        // Zig-zag carbon chain in 3D
+        { id: 3, element: 'C', x: -2.5, y: -0.1, z: 0 },
+        { id: 4, element: 'C', x: -1.2, y: 0.7, z: 0.4 },
+        { id: 5, element: 'C', x: 0, y: -0.1, z: 0 },
+        { id: 6, element: 'C', x: 1.2, y: 0.7, z: 0.4 },
+        { id: 7, element: 'C', x: 2.5, y: -0.1, z: 0 },
+        { id: 8, element: 'C', x: 3.8, y: 0.7, z: 0.4 },
         // Second NH2 group
-        { id: 9, element: 'N', x: 8.1, y: 1.3, z: 0 },
-        { id: 10, element: 'H', x: 8.7, y: 2.2, z: 0 },
-        { id: 11, element: 'H', x: 8.7, y: 0.4, z: 0 },
-        // Hydrogens (simplified - showing only a few for clarity)
-        { id: 12, element: 'H', x: 1.8, y: -0.9, z: 0 },
-        { id: 13, element: 'H', x: 1.8, y: -0.9, z: 0.8 },
+        { id: 9, element: 'N', x: 5.1, y: -0.1, z: 0 },
+        { id: 10, element: 'H', x: 5.1, y: -1.1, z: 0 },
+        { id: 11, element: 'H', x: 5.9, y: 0.3, z: 0.4 },
+        // Hydrogens (zig-zag pattern)
+        { id: 12, element: 'H', x: -2.5, y: -1.1, z: 0.4 },
+        { id: 13, element: 'H', x: -2.5, y: 0.1, z: -1.0 },
     ],
     bonds: [
-        // First NH2
         { source: 0, target: 1, order: 1 },
         { source: 0, target: 2, order: 1 },
         { source: 0, target: 3, order: 1 },
-        // Carbon chain
         { source: 3, target: 4, order: 1 },
         { source: 4, target: 5, order: 1 },
         { source: 5, target: 6, order: 1 },
         { source: 6, target: 7, order: 1 },
         { source: 7, target: 8, order: 1 },
-        // Second NH2
         { source: 8, target: 9, order: 1 },
         { source: 9, target: 10, order: 1 },
         { source: 9, target: 11, order: 1 },
